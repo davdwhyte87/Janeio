@@ -1,8 +1,10 @@
 package com.app.janeio
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -16,8 +18,15 @@ class TodoListActivity : AppCompatActivity() {
     lateinit var myListView: ListView
     lateinit var  arrayAdapter: TodoListAdapter
 
+    fun checkIfPermissions(){
+        Log.i("BUILD CHECK", Build.VERSION.SDK_INT.toString())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            startActivity(Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkIfPermissions()
        /* Log.i("XXXXXX","Helo brroooooooanh  fjsdnfjks nfkndsfjndf k")*/
         todoDBHelper = TodoItemDBHelper(this)
 
@@ -25,6 +34,8 @@ class TodoListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_todo_list)
         main_toolbar = findViewById(R.id.main_toolbar) as androidx.appcompat.widget.Toolbar
         setSupportActionBar(main_toolbar)
+        //remove app title on tool bar
+        this.setTitle("")
 
         //get data from db
         todoDBHelper = TodoItemDBHelper(this)

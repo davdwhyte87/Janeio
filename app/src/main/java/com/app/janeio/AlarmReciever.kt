@@ -35,7 +35,7 @@ class AlarmReciever : BroadcastReceiver() {
             .setContentIntent(pendingIntent)
 
         val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(123, builder.build())
+        notificationManager.notify(89898, builder.build())
 
     }
 }

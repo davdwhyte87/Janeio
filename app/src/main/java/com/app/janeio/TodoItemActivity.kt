@@ -1,13 +1,18 @@
 package com.app.janeio
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.Toolbar
 import com.app.janeio.database.TodoItemDBHelper
 import com.app.janeio.model.TodoItem
@@ -39,12 +44,13 @@ class TodoItemActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // set action bar
 
         setContentView(R.layout.activity_todo_item)
-
+        createNotificationChannel()
         toolbar = findViewById(R.id.back_toolbar) as androidx.appcompat.widget.Toolbar
         setSupportActionBar(toolbar)
 
@@ -58,15 +64,15 @@ class TodoItemActivity : AppCompatActivity() {
         selectDateBtn = findViewById(R.id.selectDate) as Button
         selectTimeBtn = findViewById(R.id.selectTime) as Button
         deleteBtn = findViewById(R.id.delete_btn) as ImageButton
-
+        calendar = Calendar.getInstance()
         //initialize date pickers
-        picker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_12H)
-            .setHour(12)
-            .setMinute(0)
-            .setTitleText("Select Due Date")
-            .build()
-        datePicker = MaterialDatePicker.Builder.datePicker().build()
+//        picker = MaterialTimePicker.Builder()
+//            .setTimeFormat(TimeFormat.CLOCK_12H)
+//            .setHour(12)
+//            .setMinute(0)
+//            .setTitleText("Select Due Date")
+//            .build()
+//        datePicker = MaterialDatePicker.Builder.datePicker().build()
 
 
         //listener
@@ -108,19 +114,24 @@ class TodoItemActivity : AppCompatActivity() {
 
 
     // take in date data and set an alarm on the android OS schedule manager
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun setAlarm(){
-        calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY]= picker.hour
-        calendar[Calendar.MINUTE] = picker.minute
-        calendar[Calendar.DAY_OF_MONTH] = selectedDate.day
-        calendar[Calendar.MONTH]= selectedDate.month
-        calendar[Calendar.YEAR]= selectedDate.year
+//        calendar = Calendar.getInstance()
+
+//        calendar[Calendar.HOUR_OF_DAY]= picker.hour
+//        calendar[Calendar.MINUTE] = picker.minute
+//        calendar[Calendar.SECOND] = 0
+//        calendar[Calendar.MILLISECOND]= 0
+//        calendar[Calendar.DAY_OF_MONTH] = selectedDate.day
+//        calendar[Calendar.MONTH]= selectedDate.month+1
+//        calendar[Calendar.YEAR]= selectedDate.year
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReciever::class.java )
         val pendingIntent = PendingIntent.getBroadcast(this, 0 ,intent, 0)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
         Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
+        Log.i("CAN SET EXACT", alarmManager.canScheduleExactAlarms().toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -145,7 +156,7 @@ class TodoItemActivity : AppCompatActivity() {
     }
 
     private fun showDatePicker(){
-
+        datePicker = MaterialDatePicker.Builder.datePicker().build()
         datePicker.show(supportFragmentManager, "DatePicker")
         datePicker.addOnPositiveButtonClickListener {
             val dateFOrmatter = SimpleDateFormat("dd-MM-yy")
@@ -153,9 +164,23 @@ class TodoItemActivity : AppCompatActivity() {
             val date = dateFOrmatter.format(Date(it))
             dateView.text = date
             hasPickedDate = true
+            calendar[Calendar.DAY_OF_MONTH] = selectedDate.day+1 //6
+            calendar[Calendar.MONTH]= selectedDate.month //0
+            calendar[Calendar.YEAR]= selectedDate.year+1900 //2023
+            Log.i("XXXXX year" , selectedDate.year.toString())
         }
+
+
     }
     private fun showTimePicker(){
+        picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Select Due Date")
+            .build()
+
+
 
         picker.show(supportFragmentManager, "AlarmNotify")
 
@@ -163,21 +188,25 @@ class TodoItemActivity : AppCompatActivity() {
             if(picker.hour > 12){
                 timeView.text= String.format("%02d", picker.hour-12)+" : " +String.format("%02d", picker.minute)+" PM"
             }else{
-                timeView.text= String.format("%02d", picker.hour-12)+" : " +String.format("%02d", picker.minute)+" AM"
+
+                timeView.text= String.format("%02d", picker.hour)+" : " +String.format("%02d", picker.minute)+" AM"
             }
 
-            calendar = Calendar.getInstance()
+
             calendar[Calendar.HOUR_OF_DAY]= picker.hour
             calendar[Calendar.MINUTE] = picker.minute
             calendar[Calendar.SECOND] = 0
             calendar[Calendar.MILLISECOND]= 0
 
             hasPickedTime = true
+            Log.i("XXXXX minute " , calendar[Calendar.MINUTE].toString() +
+                    " hour: "+calendar[Calendar.HOUR_OF_DAY].toString())
         }
     }
 
 
 
+    @RequiresApi(Build.VERSION_CODES.S)
     public fun saveItem(){
         if (item.Id == null){
             // create new item on db if there is non existing in this activity
@@ -219,6 +248,20 @@ class TodoItemActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            val name: CharSequence = "alarmappchannel"
+            val description = "Channel for Alarm app"
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val chanel = NotificationChannel("AlarmNotify", name, importance)
+            chanel.description = description
+
+            val notificationManager =  getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(chanel)
+        }
     }
 
 
