@@ -131,7 +131,7 @@ class TodoItemActivity : AppCompatActivity() {
         val pendingIntent = PendingIntent.getBroadcast(this, 0 ,intent, 0)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
         Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
-        Log.i("CAN SET EXACT", alarmManager.canScheduleExactAlarms().toString())
+//        Log.i("CAN SET EXACT", alarmManager.canScheduleExactAlarms().toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
