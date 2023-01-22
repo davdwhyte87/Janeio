@@ -23,7 +23,8 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     DBContract.TodoItemEntry.COLUMN_NOTE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TITLE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TIME + " TEXT," +
-                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT)"
+                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT)" +
+                    DBContract.TodoItemEntry.COLUMN_REQCODE + " TEXT)"
 
         private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TodoItemEntry.TABLE_NAME
     }
@@ -51,7 +52,7 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         values.put(DBContract.TodoItemEntry.COLUMN_NOTE, todoItem.Note)
         values.put(DBContract.TodoItemEntry.COLUMN_DATE, todoItem.Date)
         values.put(DBContract.TodoItemEntry.COLUMN_TIME, todoItem.Time)
-
+        values.put(DBContract.TodoItemEntry.COLUMN_REQCODE, todoItem.Reqcode)
 
         if(todoItem.Id !=null){
             Log.i("CCCCCCCCC update id",todoItem.Id.toString())
@@ -98,6 +99,7 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         var note: String
         var date: String
         var time: String
+        var reqcode:Int
 
         if (cursor!!.moveToFirst()) {
             while (cursor.isAfterLast == false) {
@@ -106,8 +108,8 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 note = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_NOTE))
                 date = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_DATE))
                 time  = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_TIME))
-
-                todoItems.add(TodoItem(id,title,note,date,time))
+                reqcode  = cursor.getInt(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_REQCODE))
+                todoItems.add(TodoItem(id,title,note,date,time, reqcode))
                 cursor.moveToNext()
             }
         }
@@ -131,7 +133,7 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
         var note: String
         var date: String
         var time: String
-
+        var reqcode:Int
         if (cursor!!.moveToFirst()) {
             while (cursor.isAfterLast == false) {
                 id = cursor.getInt(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_ID))
@@ -139,8 +141,8 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 note = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_NOTE))
                 date = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_DATE))
                 time  = cursor.getString(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_TIME))
-
-                todoItems.add(TodoItem(id,title,note,date,time))
+                reqcode  = cursor.getInt(cursor.getColumnIndex(DBContract.TodoItemEntry.COLUMN_REQCODE))
+                todoItems.add(TodoItem(id,title,note,date,time, reqcode))
                 cursor.moveToNext()
             }
         }

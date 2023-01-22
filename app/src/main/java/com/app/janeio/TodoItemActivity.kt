@@ -21,6 +21,8 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 class TodoItemActivity : AppCompatActivity() {
     private lateinit var save_btn : Button
@@ -41,6 +43,7 @@ class TodoItemActivity : AppCompatActivity() {
     var item = TodoItem(null,"","","","")
     var hasPickedTime = false
     var hasPickedDate = false
+    var requestCode = 0
 
 
 
@@ -209,6 +212,7 @@ class TodoItemActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.S)
     public fun saveItem(){
         if (item.Id == null){
+            requestCode = Random(85395).nextInt(10039,997330300)
             // create new item on db if there is non existing in this activity
             item = TodoItem(null, title_text.text.toString(),
                 note_text.text.toString(), dateView.text.toString(),timeView.text.toString() )
