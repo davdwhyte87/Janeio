@@ -23,8 +23,8 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     DBContract.TodoItemEntry.COLUMN_NOTE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TITLE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TIME + " TEXT," +
-                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT)" +
-                    DBContract.TodoItemEntry.COLUMN_REQCODE + " TEXT)"
+                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT" +
+                    DBContract.TodoItemEntry.COLUMN_REQCODE + " INTEGER )"
 
         private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TodoItemEntry.TABLE_NAME
     }

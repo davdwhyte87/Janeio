@@ -40,7 +40,7 @@ class TodoItemActivity : AppCompatActivity() {
     lateinit var deleteBtn:ImageButton
     lateinit var alarmManager:AlarmManager
     lateinit var selectedDate : Date
-    var item = TodoItem(null,"","","","")
+    var item = TodoItem(null,"","","","", 0)
     var hasPickedTime = false
     var hasPickedDate = false
     var requestCode = 0
@@ -112,6 +112,7 @@ class TodoItemActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this, "An error occured", Toast.LENGTH_SHORT).show()
             }
+            cancelAlarm()
         }
     }
 
@@ -131,10 +132,18 @@ class TodoItemActivity : AppCompatActivity() {
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReciever::class.java )
-        val pendingIntent = PendingIntent.getBroadcast(this, 0 ,intent, 0)
+        val pendingIntent = PendingIntent.getBroadcast(this, requestCode ,intent, 0)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
         Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
 //        Log.i("CAN SET EXACT", alarmManager.canScheduleExactAlarms().toString())
+    }
+
+    private fun cancelAlarm(){
+        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReciever::class.java )
+        val pendingIntent = PendingIntent.getBroadcast(this, requestCode ,intent, 0)
+        alarmManager.cancel(pendingIntent)
+        Toast.makeText(this, "Alarm cancelled", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -153,7 +162,7 @@ class TodoItemActivity : AppCompatActivity() {
             note_text.text.append(item.Note)
             timeView.text = item.Time
             dateView.text = item.Date
-
+            requestCode = item.Reqcode!!
         }
 
     }
@@ -214,16 +223,23 @@ class TodoItemActivity : AppCompatActivity() {
         if (item.Id == null){
             requestCode = Random(85395).nextInt(10039,997330300)
             // create new item on db if there is non existing in this activity
-            item = TodoItem(null, title_text.text.toString(),
-                note_text.text.toString(), dateView.text.toString(),timeView.text.toString() )
+            item = TodoItem(
+                null,
+                title_text.text.toString(),
+                note_text.text.toString(),
+                dateView.text.toString(),
+                timeView.text.toString(),
+                requestCode
+            )
             todoDBHelper = TodoItemDBHelper(this)
+            todoDBHelper.dropDB()
             todoDBHelper.insertTododItem(item)
             Toast.makeText(applicationContext, "Item Created", Toast.LENGTH_SHORT).show()
 
         }else{
             //updated item data
             var newItem = TodoItem(item.Id, title_text.text.toString(),
-                note_text.text.toString(), dateView.text.toString(),timeView.text.toString() )
+                note_text.text.toString(), dateView.text.toString(),timeView.text.toString(), requestCode )
 
             todoDBHelper = TodoItemDBHelper(this)
             todoDBHelper.insertTododItem(newItem)
