@@ -14,7 +14,7 @@ import com.app.janeio.model.TodoItem
 class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
         // If you change the database schema, you must increment the database version.
-        val DATABASE_VERSION = 1
+        val DATABASE_VERSION = 2
         val DATABASE_NAME = "FeedReader.db"
 
         private val SQL_CREATE_ENTRIES =
@@ -23,8 +23,8 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                     DBContract.TodoItemEntry.COLUMN_NOTE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TITLE + " TEXT," +
                     DBContract.TodoItemEntry.COLUMN_TIME + " TEXT," +
-                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT" +
-                    DBContract.TodoItemEntry.COLUMN_REQCODE + " INTEGER )"
+                    DBContract.TodoItemEntry.COLUMN_DATE + " TEXT," +
+                    DBContract.TodoItemEntry.COLUMN_REQCODE + " INTEGER)"
 
         private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + DBContract.TodoItemEntry.TABLE_NAME
     }
@@ -44,7 +44,7 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun insertTododItem(todoItem: TodoItem): Boolean{
+    fun insertTododItem(todoItem: TodoItem): Long{
         val db = writableDatabase
         val values = ContentValues()
         values.put(DBContract.TodoItemEntry.COLUMN_ID, todoItem.Id)
@@ -61,10 +61,11 @@ class TodoItemDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
                 , DBContract.TodoItemEntry.COLUMN_ID +"=?", arrayOf(todoItem.Id.toString()))
         }else{
             val newRowId = db.insert(DBContract.TodoItemEntry.TABLE_NAME, null, values)
+            return newRowId;
         }
 
 
-        return true
+        return 0
     }
 
     @Throws(SQLiteConstraintException::class)

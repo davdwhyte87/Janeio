@@ -119,7 +119,7 @@ class TodoItemActivity : AppCompatActivity() {
 
     // take in date data and set an alarm on the android OS schedule manager
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun setAlarm(){
+    private fun setAlarm(itemID:Int){
 //        calendar = Calendar.getInstance()
 
 //        calendar[Calendar.HOUR_OF_DAY]= picker.hour
@@ -132,6 +132,7 @@ class TodoItemActivity : AppCompatActivity() {
 
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReciever::class.java )
+        intent.putExtra("item_id", itemID)
         val pendingIntent = PendingIntent.getBroadcast(this, requestCode ,intent, 0)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
         Toast.makeText(this, "Alarm set successfully", Toast.LENGTH_SHORT).show()
@@ -181,9 +182,8 @@ class TodoItemActivity : AppCompatActivity() {
             calendar[Calendar.YEAR]= selectedDate.year+1900 //2023
             Log.i("XXXXX year" , selectedDate.year.toString())
         }
-
-
     }
+
     private fun showTimePicker(){
         picker = MaterialTimePicker.Builder()
             .setTimeFormat(TimeFormat.CLOCK_12H)
@@ -220,6 +220,7 @@ class TodoItemActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     public fun saveItem(){
+        var newitemID:Long =0
         if (item.Id == null){
             requestCode = Random(85395).nextInt(10039,997330300)
             // create new item on db if there is non existing in this activity
@@ -232,8 +233,13 @@ class TodoItemActivity : AppCompatActivity() {
                 requestCode
             )
             todoDBHelper = TodoItemDBHelper(this)
-            todoDBHelper.dropDB()
-            todoDBHelper.insertTododItem(item)
+//            todoDBHelper.dropDB()
+            newitemID =todoDBHelper.insertTododItem(item)
+            // set alarm after saving data. set alarm if date is selected
+            //set alarm only when creating new item
+            if(hasPickedDate && hasPickedTime){
+                setAlarm(newitemID.toInt())
+            }
             Toast.makeText(applicationContext, "Item Created", Toast.LENGTH_SHORT).show()
 
         }else{
@@ -245,16 +251,6 @@ class TodoItemActivity : AppCompatActivity() {
             todoDBHelper.insertTododItem(newItem)
             Toast.makeText(applicationContext, "Item Updated", Toast.LENGTH_SHORT).show()
         }
-
-
-
-
-
-        // set alarm after saving data. set alarm if date is selected
-        if(hasPickedDate && hasPickedTime){
-            setAlarm()
-        }
-
         finish()
     }
 
