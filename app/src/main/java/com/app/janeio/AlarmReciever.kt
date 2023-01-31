@@ -12,6 +12,20 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.app.janeio.database.TodoItemDBHelper
 import com.app.janeio.model.TodoItem
+import kotlin.random.Random
+
+import android.media.RingtoneManager
+
+import android.media.Ringtone
+
+
+import android.media.MediaPlayer
+
+
+
+
+
+
 
 class AlarmReciever : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent) {
@@ -50,14 +64,21 @@ class AlarmReciever : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context!!, "AlarmNotify")
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setContentTitle("Alarm")
-            .setContentText("Hi, you have a task due now")
+            .setContentText("Task: "+todoItem.Title)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
 
         val notificationManager = NotificationManagerCompat.from(context)
-        notificationManager.notify(89898, builder.build())
+        notificationManager.notify( Random(85395).nextInt(10039,997330300), builder.build())
+
+
+        val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        val ringtone = RingtoneManager.getRingtone(context, notification)
+        ringtone.play()
+        val mp = MediaPlayer.create(context, notification)
+        mp.start()
 
     }
 }

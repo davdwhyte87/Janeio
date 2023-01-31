@@ -235,6 +235,7 @@ class TodoItemActivity : AppCompatActivity() {
             todoDBHelper = TodoItemDBHelper(this)
 //            todoDBHelper.dropDB()
             newitemID =todoDBHelper.insertTododItem(item)
+            todoDBHelper.close()
             // set alarm after saving data. set alarm if date is selected
             //set alarm only when creating new item
             if(hasPickedDate && hasPickedTime){
