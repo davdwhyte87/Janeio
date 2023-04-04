@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_notes"
+        android:textSize="@dimen/text_head"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/app_margin"
+        android:layout_marginTop="@dimen/margin_a"
+        android:layout_marginBottom="@dimen/margin_a"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginLeft="@dimen/app_margin"
+        android:layout_marginRight="@dimen/app_margin"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/app_margin"
+            android:layout_marginRight="@dimen/app_margin"
+            android:background="@drawable/rounded_edit_text"
+            android:hint="@string/hint_search"
+            android:textSize="@dimen/text_head2"
+            android:padding="@dimen/text_padding"
+            android:layout_marginStart="40dp"
+            />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_search"
+            />
+    </RelativeLayout>
+
+</LinearLayout>
