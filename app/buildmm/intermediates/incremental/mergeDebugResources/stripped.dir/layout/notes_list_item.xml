@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_list_view"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+
+    >
+
+    <TextView
+        android:id="@+id/notes_recycler_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kolllor osuld is the man...."
+        android:textSize="@dimen/text_head2"
+        android:textStyle="bold"
+        android:paddingStart="@dimen/text_padding2"
+        android:paddingEnd="@dimen/text_padding2"
+        android:paddingTop="@dimen/notes_list_item_spacing"
+        android:paddingBottom="@dimen/notes_list_item_spacing"
+        />
+
+    <TextView
+        android:id="@+id/notes_recycler_item_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/text_padding2"
+        android:paddingEnd="@dimen/text_padding2"
+        android:text="We plan on making sure that the men who brought ..."
+        android:textSize="@dimen/text_body"
+        android:paddingTop="@dimen/notes_list_item_spacing"
+        android:paddingBottom="@dimen/notes_list_item_spacing"
+        />
+
+    <TextView
+        android:id="@+id/notes_recycler_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/text_padding2"
+        android:paddingEnd="@dimen/text_padding2"
+        android:text="26th feb 2023."
+        android:textSize="@dimen/text_small"
+        android:paddingTop="@dimen/notes_list_item_spacing"
+        android:paddingBottom="@dimen/notes_list_item_spacing"
+        />
+
+</LinearLayout>

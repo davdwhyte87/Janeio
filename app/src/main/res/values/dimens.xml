@@ -4,11 +4,16 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="text_head">30dp</dimen>
-    <dimen name="text_head2">20sp</dimen>
-    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_head2">12sp</dimen>
+    <dimen name="text_body">10sp</dimen>
     <dimen name="text_small">10sp</dimen>
-    <dimen name="app_margin">25dp</dimen>
+    <dimen name="app_margin">15dp</dimen>
+    <dimen name="margin_small">5dp</dimen>
     <dimen name="margin_a">20dp</dimen>
+    <dimen name="margin_b">30dp</dimen>
+    <dimen name="margin_c">50dp</dimen>
     <dimen name="text_padding">10dp</dimen>
-    <dimen name="text_padding2">20dp</dimen>
+    <dimen name="text_padding2">10dp</dimen>
+
+    <dimen name="notes_list_item_spacing">2dp</dimen>
 </resources>
