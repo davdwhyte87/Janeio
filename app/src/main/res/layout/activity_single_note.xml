@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SingleNoteActivity"
+    android:orientation="vertical"
+    android:layout_margin="@dimen/app_margin"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/back_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
+        android:layout_gravity="left"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="02:50 PM"
+        android:textColor="@color/black2"
+        android:textSize="@dimen/text_head2"
+        android:paddingTop="@dimen/text_padding"
+        android:paddingBottom="@dimen/text_padding"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Tittle"
+        android:textColorHint="@color/black"
+        android:background="@color/white"
+        android:textStyle="bold"
+        android:paddingBottom="@dimen/text_padding"
+        android:paddingTop="@dimen/text_padding"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Not something down"
+        android:textColorHint="@color/black2"
+        android:background="@color/white"
+        android:textSize="@dimen/text_body"
+        android:paddingTop="@dimen/text_padding"
+        android:maxLines="20"
+        />
+
+</LinearLayout>

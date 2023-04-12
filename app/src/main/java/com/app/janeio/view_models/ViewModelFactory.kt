@@ -1,12 +1,13 @@
 package com.app.janeio.view_models
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ViewModelFactory: ViewModelProvider.Factory {
+class ViewModelFactory(private val application: Application): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(NotesViewModel::class.java)){
-            return NotesViewModel() as T
+            return NotesViewModel(application) as T
         }
 
         throw java.lang.IllegalArgumentException("Unknown model")
