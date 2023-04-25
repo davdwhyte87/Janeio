@@ -12,6 +12,7 @@ object DBContract {
             val COLUMN_NOTE = "note"
             val COLUMN_DATE = "date"
             val COLUMN_TIME = "time"
+            val COLUMN_REQCODE ="request_code"
 
         }
     }
