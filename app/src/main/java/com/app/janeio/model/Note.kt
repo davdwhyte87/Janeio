@@ -9,9 +9,16 @@ class Note(
     @PrimaryKey(autoGenerate = true) val id: Int?,
     val Title: String,
     val Note: String,
+    val Type: String,
     val CreatedAt: String,
-    val UpdatedAt: String
+    val UpdatedAt: String,
+    val FolderID: Int?
 )
+
+enum class FileType{
+    FILE, FOLDER
+}
+
 
 @Dao
 interface NoteDao {

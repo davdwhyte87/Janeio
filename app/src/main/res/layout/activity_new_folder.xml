@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NewFolderActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/back_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
+        android:layout_gravity="left"
+        />
+    
+    <EditText
+        android:id="@+id/folder_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/input_height"
+        android:hint="@string/input_folder_name"
+        android:textColorHint="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_head"
+        android:textAlignment="center"
+        android:layout_margin="@dimen/margin_c"
+        />
+
+
+    <Button
+        android:id="@+id/btn_save_folder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginStart="@dimen/margin_c"
+        android:layout_marginEnd="@dimen/margin_c"
+        android:text="@string/btn_new_folder"
+        android:textStyle="normal"
+        android:textSize="@dimen/text_head"
+
+        />
+</LinearLayout>

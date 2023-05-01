@@ -31,6 +31,7 @@
         android:paddingBottom="@dimen/text_padding"
         />
     <EditText
+        android:id="@+id/note_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Tittle"
@@ -42,9 +43,10 @@
         />
 
     <EditText
+        android:id="@+id/note_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Not something down"
+        android:hint="Note something down"
         android:textColorHint="@color/black2"
         android:background="@color/white"
         android:textSize="@dimen/text_body"

@@ -10,6 +10,10 @@ class ViewModelFactory(private val application: Application): ViewModelProvider.
             return NotesViewModel(application) as T
         }
 
+        else if(modelClass.isAssignableFrom(FolderViewModel::class.java)){
+            return FolderViewModel(application) as T
+        }
+
         throw java.lang.IllegalArgumentException("Unknown model")
     }
 }

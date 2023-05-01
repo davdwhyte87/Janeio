@@ -82,46 +82,42 @@ class NotesFragment : Fragment() {
 
 
         // floating feb
-        createNewBtn =  view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_btn)
-        createNewBtn.shrink()
-        createFolderBtn = view.findViewById<FloatingActionButton>(R.id.create_folder_btn)
-        createNoteBtn = view.findViewById<FloatingActionButton>(R.id.create_note_btn)
-        createFolderBtnText = view.findViewById<TextView>(R.id.create_folder_btn_text)
-        createNoteBtnText = view.findViewById<TextView>(R.id.create_note_btn_text)
-        // set buttons as invisible
-        createFolderBtn.visibility = View.GONE
-        createNoteBtn.visibility = View.GONE
-        createFolderBtnText.visibility = View.GONE
-        createNoteBtnText.visibility = View.GONE
+//        createNewBtn =  view.findViewById<ExtendedFloatingActionButton>(R.id.create_new_btn)
+//        createNewBtn.shrink()
+//        createFolderBtn = view.findViewById<FloatingActionButton>(R.id.create_folder_btn)
+//        createNoteBtn = view.findViewById<FloatingActionButton>(R.id.create_note_btn)
+//        createFolderBtnText = view.findViewById<TextView>(R.id.create_folder_btn_text)
+//        createNoteBtnText = view.findViewById<TextView>(R.id.create_note_btn_text)
+//        // set buttons as invisible
+//        createFolderBtn.visibility = View.GONE
+//        createNoteBtn.visibility = View.GONE
+//        createFolderBtnText.visibility = View.GONE
+//        createNoteBtnText.visibility = View.GONE
+//
+//        var isAllFabsVisible = false
+//
+//        createNewBtn.setOnClickListener{
+////            Log.i("XXXXXXX", "expand")
+//            if(isAllFabsVisible){
+//                createFolderBtn.hide()
+//                createFolderBtnText.visibility = View.GONE
+//                createNoteBtn.hide()
+//                createNoteBtnText.visibility = View.GONE
+//                createNewBtn.shrink()
+//                isAllFabsVisible = false
+//            }else{
+//
+//
+//                createFolderBtn.show()
+//                createFolderBtnText.visibility = View.VISIBLE
+//                createNoteBtn.show()
+//                createNoteBtnText.visibility = View.VISIBLE
+//                createNewBtn.extend()
+//                isAllFabsVisible = true
+//            }
+//        }
 
-        var isAllFabsVisible = false
 
-        createNewBtn.setOnClickListener{
-//            Log.i("XXXXXXX", "expand")
-            if(isAllFabsVisible){
-                createFolderBtn.hide()
-                createFolderBtnText.visibility = View.GONE
-                createNoteBtn.hide()
-                createNoteBtnText.visibility = View.GONE
-                createNewBtn.shrink()
-                isAllFabsVisible = false
-            }else{
-
-
-                createFolderBtn.show()
-                createFolderBtnText.visibility = View.VISIBLE
-                createNoteBtn.show()
-                createNoteBtnText.visibility = View.VISIBLE
-                createNewBtn.extend()
-                isAllFabsVisible = true
-            }
-        }
-
-        // create new note onclick open Single note page
-        createNoteBtn.setOnClickListener{
-            val intent = Intent(this.context, SingleNoteActivity::class.java)
-            startActivity(intent)
-        }
 
         return view
 
@@ -150,9 +146,9 @@ class NotesFragment : Fragment() {
     }
 
     fun addData(){
-        val inputText = searchText.text
-        val note = Note(null, inputText.toString(), "thisi i s note 1", "2:29","8:90")
-        viewModel.add(note)
+//        val inputText = searchText.text
+//        val note = Note(null, inputText.toString(), "thisi i s note 1", "2:29","8:90")
+//        viewModel.add(note)
     }
 
     companion object {
