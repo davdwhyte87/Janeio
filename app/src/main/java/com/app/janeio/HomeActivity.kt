@@ -141,7 +141,9 @@ class HomeActivity:AppCompatActivity(){
     fun observeData(){
         viewModel.notesList.observe(this, {
             Log.i("data", it.toString())
-            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it as ArrayList<Note>, this)
+            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it as ArrayList<Note>, this, NotesRecyclerAdapter.OnClickListener{
+                note ->  
+            })
         })
     }
 

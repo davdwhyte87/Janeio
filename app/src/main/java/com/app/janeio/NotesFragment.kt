@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.utils.NotesRecyclerAdapter
 import com.app.janeio.view_models.NotesViewModel
@@ -125,16 +126,32 @@ class NotesFragment : Fragment() {
 
     private fun initailizeAdapter(){
         notesRecycler.layoutManager = viewManager
+        viewModel.getAllNotes()
         observeData()
+
     }
 
     fun observeData(){
         viewModel.notesList.observe(this.viewLifecycleOwner, {
             Log.i("data", it.toString())
             notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it as ArrayList<Note>,
-                this.requireContext()!!.applicationContext!!
+                this.requireContext()!!.applicationContext!!, NotesRecyclerAdapter.OnClickListener{
+                    note ->  openSingleNote(note)
+                }
             )
         })
+    }
+
+    fun openSingleNote(note: Note){
+        if(note.Type == FileType.FILE.toString()){
+            val intent = Intent(this.requireContext()!!.applicationContext, SingleNoteActivity::class.java)
+            intent.putExtra("noteId", note.id)
+            startActivity(intent)
+        }
+        else if (note.Type == FileType.FOLDER.toString()){
+            val intent = Intent(this.requireContext()!!.applicationContext, FilesViewActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     fun populateData(){

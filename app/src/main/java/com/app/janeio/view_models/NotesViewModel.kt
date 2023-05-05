@@ -11,6 +11,10 @@ import com.app.janeio.model.NoteDao
 import com.app.janeio.model.TodoItem
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 class NotesViewModel(application: Application) :AndroidViewModel(application) {
@@ -20,6 +24,9 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
 
     lateinit var notesList : LiveData<MutableList<Note>>
 //    var newList :MutableList<Note>
+    val defNote = Note(null,"","","","","",null)
+    private val _singleNote= MutableStateFlow(defNote)
+    val singleNote = _singleNote.asStateFlow()
 
     init {
         database = NotesDatabase.getInstance(application)
@@ -49,6 +56,13 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
             notesList = noteRepository.getAll()
         }
 
+    }
+
+
+    fun getSingle(id:Int){
+        viewModelScope.launch {
+            _singleNote.value = noteRepository.getSingle(id).first()
+        }
     }
 
 

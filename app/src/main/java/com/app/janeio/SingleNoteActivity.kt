@@ -8,13 +8,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.lifecycle.lifecycleScope
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.view_models.NotesViewModel
 import com.app.janeio.view_models.ViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -25,7 +28,9 @@ class SingleNoteActivity : AppCompatActivity() {
 
     private lateinit var noteBody: EditText
     private lateinit var noteHead:EditText
+    private lateinit var dateTime: TextView
 
+    var readMode = false
     private lateinit var backBtn:ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +44,52 @@ class SingleNoteActivity : AppCompatActivity() {
         // set note body and head
         noteBody = findViewById(R.id.note_body)
         noteHead = findViewById(R.id.note_head)
+        dateTime = findViewById(R.id.date_time)
 
         // setup view models
         val factory = ViewModelFactory(application)
         viewModel = factory.create(NotesViewModel::class.java)
+
+
+        observerData()
+        //check if there is a note data to display
+        checkNoteData()
+
+    }
+
+    fun checkNoteData(){
+        var intent = intent
+
+        val noteId = intent.getIntExtra("noteId", 0)
+
+        if (noteId !=0){
+            readMode = true
+            viewModel.getSingle(noteId)
+            Log.i("XXXXX", "Found Note ID "+noteId.toString())
+//
+//            noteHead.setText(viewModel.singleNote.value?.Title ?: "")
+//            noteBody.setText(viewModel.singleNote.value?.Note ?: "")
+//            dateTime.setText(viewModel.singleNote.value?.CreatedAt ?: "")
+        }
+
+    }
+
+    fun observerData(){
+//        viewModel.singleNote.observe(this, {
+//            Log.i("XXXXXX", "Data set "+it.Note)
+//            noteHead.setText(it.Title)
+//            noteBody.setText(it.Note)
+//            dateTime.setText(it.CreatedAt)
+//        })
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.singleNote.collectLatest {
+                Log.i("XXXXXX", "Data set "+it.Note)
+                noteHead.setText(it.Title)
+                noteBody.setText(it.Note)
+                dateTime.setText(it.CreatedAt)
+            }
+        }
     }
 
 
@@ -68,7 +115,10 @@ class SingleNoteActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // save data before activity closes
-        addData()
+        if (noteBody.text.toString() != "" && readMode==false){
+            addData()
+        }
+
     }
 
 

@@ -4,14 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.app.janeio.model.Folder
-import com.app.janeio.model.FolderDao
-import com.app.janeio.model.Note
-import com.app.janeio.model.NoteDao
+import com.app.janeio.model.*
 
 
-@Database(entities = [Note::class, Folder::class], version = 5)
+@Database(entities = [Note::class, Folder::class], version = 6)
+//@TypeConverters(Converter::class)
 abstract class NotesDatabase :RoomDatabase(){
 
     abstract fun notesDao(): NoteDao

@@ -2,6 +2,8 @@ package com.app.janeio.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Entity(tableName = "note_table")
@@ -38,4 +40,7 @@ interface NoteDao {
 
     @Query("select * from note_table")
     fun getAllNotes(): LiveData<MutableList<Note>>
+
+    @Query("select * from note_table where id=:id")
+    fun getSingle(id:Int):Flow<Note>
 }
