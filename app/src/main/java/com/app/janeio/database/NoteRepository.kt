@@ -31,5 +31,11 @@ class NoteRepository(application: Application) {
         return noteDao.getSingle(id)
     }
 
+     suspend fun update(note:Note){
+        noteDao.update(note)
+    }
+    fun updatex(id:Int, body:String):Flow<Int>{
+        return noteDao.updatex(id, body)
+    }
 
 }

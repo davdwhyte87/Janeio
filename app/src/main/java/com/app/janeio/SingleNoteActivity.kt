@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
@@ -30,7 +31,9 @@ class SingleNoteActivity : AppCompatActivity() {
     private lateinit var noteHead:EditText
     private lateinit var dateTime: TextView
 
+    var viewedNote = Note(null, "","","","","", 0)
     var readMode = false
+    var viewTextCount = 0
     private lateinit var backBtn:ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +54,14 @@ class SingleNoteActivity : AppCompatActivity() {
         viewModel = factory.create(NotesViewModel::class.java)
 
 
+
+
         observerData()
         //check if there is a note data to display
         checkNoteData()
+
+        // UI listeners
+
 
     }
 
@@ -65,6 +73,7 @@ class SingleNoteActivity : AppCompatActivity() {
         if (noteId !=0){
             readMode = true
             viewModel.getSingle(noteId)
+
             Log.i("XXXXX", "Found Note ID "+noteId.toString())
 //
 //            noteHead.setText(viewModel.singleNote.value?.Title ?: "")
@@ -84,10 +93,13 @@ class SingleNoteActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
             viewModel.singleNote.collectLatest {
-                Log.i("XXXXXX", "Data set "+it.Note)
+
+                //Log.i("XXXXXX", "Data set "+it.Note)
+                viewedNote = it
                 noteHead.setText(it.Title)
                 noteBody.setText(it.Note)
                 dateTime.setText(it.CreatedAt)
+                viewTextCount = it.Note.length
             }
         }
     }
@@ -116,8 +128,29 @@ class SingleNoteActivity : AppCompatActivity() {
         super.onDestroy()
         // save data before activity closes
         if (noteBody.text.toString() != "" && readMode==false){
+            Log.i("XXXXX", "adding new ")
             addData()
+        }else{
+            if (noteBody.text.length > viewTextCount){
+                Log.i("XXXXX", "needs updating ")
+                val currentDateTime = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                val formattedDateTime = currentDateTime.format(formatter)
+                val note = Note(viewedNote.id,
+                    noteHead.text.toString(),
+                    noteBody.text.toString(),
+                    viewedNote.Type,
+                    viewedNote.CreatedAt,
+                    formattedDateTime,
+                    viewedNote.FolderID
+                )
+
+                Log.i("XXID",note.Note)
+                viewModel.update(note)
+            }
         }
+
+
 
     }
 
