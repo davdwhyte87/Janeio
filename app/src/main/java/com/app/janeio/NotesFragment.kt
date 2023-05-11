@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.model.FileType
@@ -19,6 +20,8 @@ import com.app.janeio.view_models.NotesViewModel
 import com.app.janeio.view_models.ViewModelFactory
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,6 +60,10 @@ class NotesFragment : Fragment() {
 //
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllNotes()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -129,15 +136,26 @@ class NotesFragment : Fragment() {
 
     }
 
+//    fun observeData(){
+//        viewModel.notesList.observe(this.viewLifecycleOwner, {
+//            Log.i("data", it.toString())
+//            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() ,
+//                this.requireContext()!!.applicationContext!!, NotesRecyclerAdapter.OnClickListener{
+//                    note ->  openSingleNote(note)
+//                }
+//            )
+//        })
+//    }
+
     fun observeData(){
-        viewModel.notesList.observe(this.viewLifecycleOwner, {
-            Log.i("data", it.toString())
-            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() ,
-                this.requireContext()!!.applicationContext!!, NotesRecyclerAdapter.OnClickListener{
-                    note ->  openSingleNote(note)
-                }
-            )
-        })
+        lifecycleScope.launch {
+            viewModel.notesList.collectLatest {
+                Log.i("data", it.toString())
+                notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() , requireContext().applicationContext, NotesRecyclerAdapter.OnClickListener{
+                        note ->openSingleNote(note)
+                })
+            }
+        }
     }
 
     fun openSingleNote(note: Note){

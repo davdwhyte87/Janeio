@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.model.Note
@@ -15,6 +16,8 @@ import com.app.janeio.view_models.NotesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class HomeActivity:AppCompatActivity(){
     private lateinit var notesRecycler:RecyclerView
@@ -134,12 +137,16 @@ class HomeActivity:AppCompatActivity(){
     }
 
     fun observeData(){
-        viewModel.notesList.observe(this, {
-            Log.i("data", it.toString())
-            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() , this, NotesRecyclerAdapter.OnClickListener{
-                note ->  
-            })
-        })
+        lifecycleScope.launch {
+            viewModel.notesList.collectLatest {
+                Log.i("data", it.toString())
+                notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() , application, NotesRecyclerAdapter.OnClickListener{
+                        note ->
+                })
+            }
+        }
+
+
     }
 
 

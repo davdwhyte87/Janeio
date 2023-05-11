@@ -42,8 +42,8 @@ interface NoteDao {
     fun deleteAllNotes()
 
 
-    @Query("select * from note_table")
-    fun getAllNotes(): LiveData<MutableList<Note>>
+    @Query("select * from note_table ")
+    fun getAllNotes(): Flow<List<Note>>
 
     @Query("select * from note_table where id=:id")
     fun getSingle(id:Int):Flow<Note>

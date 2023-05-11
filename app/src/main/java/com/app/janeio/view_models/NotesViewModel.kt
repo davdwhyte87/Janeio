@@ -19,10 +19,12 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
     private var noteDao:NoteDao
     private var database:NotesDatabase
     private val noteRepository: NoteRepository
-    lateinit var notesList : LiveData<MutableList<Note>>
-//    var newList :MutableList<Note>
     val defNote = Note(null,"","","","","",null)
     var defNotesList:List<Note> = (listOf(defNote))
+    private val _notelist = MutableStateFlow(defNotesList)
+    var notesList = _notelist.asStateFlow()
+//    var newList :MutableList<Note>
+
     private val _singleNote= MutableStateFlow(defNote)
     val singleNote = _singleNote.asStateFlow()
     private val _folderFiles = MutableStateFlow(defNotesList)
@@ -32,7 +34,7 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
         noteDao = database.notesDao()
 
         noteRepository = NoteRepository(application)
-        notesList = noteRepository.allNotes.asFlow().asLiveData()
+
     }
 //    @OptIn(DelicateCoroutinesApi::class)
     fun add(item: Note){
@@ -60,13 +62,29 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
 
     fun remove(item: Note){
 
-        notesList.value?.remove(item)
+        //notesList.value?.remove(item)
     }
 
 //    @OptIn(DelicateCoroutinesApi::class)
     fun getAllNotes(){
-        GlobalScope.launch {
-            notesList = noteRepository.getAll()
+        viewModelScope.launch {
+            val temp = noteRepository.getAll().first()
+            // hide notes that have association with a folder
+            val newNoteList = ArrayList<Note>()
+            temp.forEach {
+                if(it.FolderID ==null){
+                    newNoteList.add(it)
+                }
+            }
+            _notelist.value = newNoteList
+//            if (tempList != null) {
+//                tempList.forEach {
+//                    if (it.FolderID != null){
+//                        tempList.remove(it)
+//                    }
+//                }
+//            }
+//            notesList.value = noteRepository.getAll()
         }
 
     }

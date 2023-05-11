@@ -161,10 +161,6 @@ class SingleNoteActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         // save data before activity closes
-
-
-
-
     }
 
 

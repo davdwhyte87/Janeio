@@ -11,7 +11,7 @@ class NoteRepository(application: Application) {
     private var noteDao:NoteDao
 
     private val database= NotesDatabase.getInstance(application)
-    lateinit var allNotes:LiveData<MutableList<Note>>
+    lateinit var allNotes:Flow<List<Note>>
     init {
         noteDao=database.notesDao()
 //        allNotes = noteDao.getAllNotes()
@@ -23,7 +23,7 @@ class NoteRepository(application: Application) {
         noteDao.insert(note)
     }
 
-    suspend fun getAll(): LiveData<MutableList<Note>> {
+    suspend fun getAll(): Flow<List<Note>> {
         return noteDao.getAllNotes()
     }
 
