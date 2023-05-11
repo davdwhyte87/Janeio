@@ -30,6 +30,9 @@ class NoteRepository(application: Application) {
     fun getSingle(id:Int):Flow<Note>{
         return noteDao.getSingle(id)
     }
+    fun getFolderFiles(id:Int):Flow<List<Note>>{
+        return noteDao.getFolderFiles(id)
+    }
 
      suspend fun update(note:Note){
         noteDao.update(note)

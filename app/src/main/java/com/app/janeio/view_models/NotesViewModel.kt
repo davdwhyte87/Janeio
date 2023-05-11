@@ -19,13 +19,14 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
     private var noteDao:NoteDao
     private var database:NotesDatabase
     private val noteRepository: NoteRepository
-
     lateinit var notesList : LiveData<MutableList<Note>>
 //    var newList :MutableList<Note>
     val defNote = Note(null,"","","","","",null)
+    var defNotesList:List<Note> = (listOf(defNote))
     private val _singleNote= MutableStateFlow(defNote)
     val singleNote = _singleNote.asStateFlow()
-
+    private val _folderFiles = MutableStateFlow(defNotesList)
+    val folderFiles = _folderFiles.asStateFlow()
     init {
         database = NotesDatabase.getInstance(application)
         noteDao = database.notesDao()
@@ -35,8 +36,10 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
     }
 //    @OptIn(DelicateCoroutinesApi::class)
     fun add(item: Note){
-        GlobalScope.launch{
-            noteRepository.insert(item)
+        viewModelScope.launch{
+            withContext(Dispatchers.IO){
+                noteRepository.insert(item)
+            }
         }
 //        newList.add(item)
 //        notesList.value = newList
@@ -72,6 +75,12 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
     fun getSingle(id:Int){
         viewModelScope.launch {
             _singleNote.value = noteRepository.getSingle(id).first()
+        }
+    }
+
+    fun getFolderFiles(id:Int){
+        viewModelScope.launch {
+            _folderFiles.value = noteRepository.getFolderFiles(id).first()
         }
     }
 

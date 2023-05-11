@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
+            android:name=".SingleFolderActivity"
+            android:exported="false" />
+        <activity
             android:name=".FilesViewActivity"
             android:exported="false" />
         <activity

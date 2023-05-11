@@ -3,23 +3,18 @@ package com.app.janeio
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View.GONE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.model.Note
-import com.app.janeio.ui.home.HomeFragment
 import com.app.janeio.utils.NotesRecyclerAdapter
 import com.app.janeio.view_models.NotesViewModel
-import com.app.janeio.view_models.ViewModelFactory
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlin.math.log
 
 class HomeActivity:AppCompatActivity(){
     private lateinit var notesRecycler:RecyclerView
@@ -141,7 +136,7 @@ class HomeActivity:AppCompatActivity(){
     fun observeData(){
         viewModel.notesList.observe(this, {
             Log.i("data", it.toString())
-            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it as ArrayList<Note>, this, NotesRecyclerAdapter.OnClickListener{
+            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() , this, NotesRecyclerAdapter.OnClickListener{
                 note ->  
             })
         })

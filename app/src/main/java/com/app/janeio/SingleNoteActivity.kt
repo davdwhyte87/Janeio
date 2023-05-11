@@ -30,7 +30,8 @@ class SingleNoteActivity : AppCompatActivity() {
     private lateinit var noteBody: EditText
     private lateinit var noteHead:EditText
     private lateinit var dateTime: TextView
-
+    var isFromFolderCreateFile = 0
+    var noteId = 0
     var viewedNote = Note(null, "","","","","", 0)
     var readMode = false
     var viewTextCount = 0
@@ -68,17 +69,18 @@ class SingleNoteActivity : AppCompatActivity() {
     fun checkNoteData(){
         var intent = intent
 
-        val noteId = intent.getIntExtra("noteId", 0)
-
+        noteId = intent.getIntExtra("noteId", 0)
+        isFromFolderCreateFile = intent.getIntExtra("newFileFromFolder", 0)
         if (noteId !=0){
             readMode = true
             viewModel.getSingle(noteId)
 
             Log.i("XXXXX", "Found Note ID "+noteId.toString())
-//
-//            noteHead.setText(viewModel.singleNote.value?.Title ?: "")
-//            noteBody.setText(viewModel.singleNote.value?.Note ?: "")
-//            dateTime.setText(viewModel.singleNote.value?.CreatedAt ?: "")
+
+            // if the file has an id, but is coming from new file in folder action then enter write mode
+            if(isFromFolderCreateFile == 1){
+                readMode = false
+            }
         }
 
     }
@@ -104,29 +106,8 @@ class SingleNoteActivity : AppCompatActivity() {
         }
     }
 
-
-    // add data to the view model
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addData(){
-        val currentDateTime = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-        val formattedDateTime = currentDateTime.format(formatter)
-        val note = Note(null,
-            noteHead.text.toString(),
-            noteBody.text.toString(),
-            FileType.FILE.toString(),
-            formattedDateTime,
-            formattedDateTime,
-            null
-        )
-        viewModel.add(note)
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onDestroy() {
-        super.onDestroy()
-        // save data before activity closes
+    fun handleDestroyActivity(){
         if (noteBody.text.toString() != "" && readMode==false){
             Log.i("XXXXX", "adding new ")
             addData()
@@ -149,20 +130,55 @@ class SingleNoteActivity : AppCompatActivity() {
                 viewModel.update(note)
             }
         }
+    }
+
+    // add data to the view model
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addData(){
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+        val formattedDateTime = currentDateTime.format(formatter)
+        var note = Note(null,
+            noteHead.text.toString(),
+            noteBody.text.toString(),
+            FileType.FILE.toString(),
+            formattedDateTime,
+            formattedDateTime,
+            null
+        )
+
+        // set folder id if it exists
+        if (isFromFolderCreateFile == 1){
+            Log.i("DDDDD", "folder in fole created +"+noteId.toString())
+            note.FolderID = noteId
+        }
+        viewModel.add(note)
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onDestroy() {
+        super.onDestroy()
+        // save data before activity closes
+
 
 
 
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.back_btn->{
+                handleDestroyActivity()
                 finish()
             }
         }
         return false
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
 //        menuInflater.inflate(R.menu.back_menu, menu)
@@ -177,6 +193,7 @@ class SingleNoteActivity : AppCompatActivity() {
             backBtn= actionBarView.findViewById<ImageButton>(R.id.back_btn)
             backBtn.setOnClickListener{
                 //Log.i("XXXXXXX","HHHHHHHHH")
+                handleDestroyActivity()
                 finish()
             }
 

@@ -17,4 +17,5 @@
     <string name="btn_new_folder">Save</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new_file_in_folder">Create new file in folder</string>
 </resources>

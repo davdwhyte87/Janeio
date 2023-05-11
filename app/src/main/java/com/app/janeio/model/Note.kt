@@ -15,7 +15,7 @@ class Note(
     val Type: String,
     val CreatedAt: String,
     val UpdatedAt: String,
-    val FolderID: Int?
+    var FolderID: Int?
 )
 
 enum class FileType{
@@ -47,4 +47,7 @@ interface NoteDao {
 
     @Query("select * from note_table where id=:id")
     fun getSingle(id:Int):Flow<Note>
+
+    @Query("select * from note_table where FolderID=:id")
+    fun getFolderFiles(id:Int):Flow<List<Note>>
 }

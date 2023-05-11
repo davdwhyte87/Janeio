@@ -3,19 +3,21 @@ package com.app.janeio.utils
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.R
+import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.view_models.NotesViewModel
-import org.w3c.dom.Text
 
 
-class NotesRecyclerAdapter(val viewModel:NotesViewModel, val arrayList:ArrayList<Note>,
-                           val context: Context,
-                           val onClickListener: OnClickListener
+class NotesRecyclerAdapter(
+    val viewModel:NotesViewModel, val arrayList: Array<Note>,
+    val context: Context,
+    val onClickListener: OnClickListener
 )
     : RecyclerView.Adapter<NotesRecyclerAdapter.NotesViewHolder>(){
 
@@ -47,8 +49,10 @@ class NotesRecyclerAdapter(val viewModel:NotesViewModel, val arrayList:ArrayList
             xbinding.findViewById<TextView>(R.id.notes_recycler_item_title).text = note.Title
             xbinding.findViewById<TextView>(R.id.notes_recycler_item_info).text = note.Note
             xbinding.findViewById<TextView>(R.id.notes_recycler_item_date).text = note.CreatedAt
-
-
+            val folderIcon = xbinding.findViewById<ImageView>(R.id.folder_icon)
+            if (note.Type == FileType.FILE.toString()){
+                folderIcon.visibility = GONE
+            }
 //            xbinding.findViewById<Button>(R.id.delete).setOnClickListener{
 //                viewModel.remove(blog)
 //                notifyItemRemoved(arrayList.indexOf(blog))

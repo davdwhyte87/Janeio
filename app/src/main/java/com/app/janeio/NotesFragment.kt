@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.model.FileType
@@ -134,7 +132,7 @@ class NotesFragment : Fragment() {
     fun observeData(){
         viewModel.notesList.observe(this.viewLifecycleOwner, {
             Log.i("data", it.toString())
-            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it as ArrayList<Note>,
+            notesRecycler.adapter = NotesRecyclerAdapter(viewModel, it.toTypedArray() ,
                 this.requireContext()!!.applicationContext!!, NotesRecyclerAdapter.OnClickListener{
                     note ->  openSingleNote(note)
                 }
@@ -149,7 +147,8 @@ class NotesFragment : Fragment() {
             startActivity(intent)
         }
         else if (note.Type == FileType.FOLDER.toString()){
-            val intent = Intent(this.requireContext()!!.applicationContext, FilesViewActivity::class.java)
+            val intent = Intent(this.requireContext()!!.applicationContext, SingleFolderActivity::class.java)
+            intent.putExtra("noteId", note.id)
             startActivity(intent)
         }
     }
