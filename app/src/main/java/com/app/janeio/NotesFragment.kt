@@ -4,12 +4,15 @@ package com.app.janeio
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.OnScrollChangedListener
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +25,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,7 +75,7 @@ class NotesFragment : Fragment() {
         // Inflate the layout for this fragment
 
 
-        val view = inflater.inflate(R.layout.notes_fragment, container, false)
+        val view = inflater.inflate(R.layout.home_fragment2, container, false)
         notesRecycler = view.findViewById(R.id.notes_recycler)
         val application = requireNotNull(this.context).applicationContext
         val factory = ViewModelFactory(requireActivity().application)
@@ -122,6 +126,21 @@ class NotesFragment : Fragment() {
 //                isAllFabsVisible = true
 //            }
 //        }
+
+        val targetScrollView = view.findViewById<ScrollView>(R.id.home_scroll_view)
+        targetScrollView.getViewTreeObserver().addOnScrollChangedListener(OnScrollChangedListener {
+
+            val scrollX: Int = targetScrollView.getScrollY()
+            if (scrollX > 565 ){
+                Log.d("TAG", "hit scool")
+                targetScrollView.setOnTouchListener(object: View.OnTouchListener{
+                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                        return true
+                    }
+                })
+            }
+            Log.d("TAG", "scrollX: $scrollX")
+        })
 
 
 

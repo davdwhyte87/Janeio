@@ -1,6 +1,7 @@
 package com.app.janeio.utils
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.app.janeio.R
@@ -56,6 +58,14 @@ class NotesRecyclerAdapter(
             if (note.Type == FileType.FILE.toString()){
                 folderIcon.visibility = GONE
             }
+
+            val colorPick =(1..3).random()
+            when(colorPick){
+                1->noteView.background.setTint(ContextCompat.getColor(context, R.color.yellow))
+                2->noteView.background.setTint(ContextCompat.getColor(context, R.color.seal))
+                3->noteView.background.setTint(ContextCompat.getColor(context, R.color.light_grey))
+            }
+//            noteView.background.setTint(ContextCompat.getColor(context, R.color.yellow))
 //            if(note.Type == FileType.FILE.toString() && note.FolderID !=null){
 //
 //            }

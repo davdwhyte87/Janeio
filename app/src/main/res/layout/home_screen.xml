@@ -8,17 +8,17 @@
     tools:context=".HomeActivity"
     android:orientation="vertical"
     >
-
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_nav"
+        tools:ignore="NotSibling"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_above="@+id/bottom_nav"
-            tools:ignore="NotSibling"/>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new_btn2"
             android:layout_width="wrap_content"
@@ -140,6 +140,7 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:scrollIndicators="left"
+        android:background="@color/dark_blue"
         app:itemTextAppearanceInactive="@style/menuTextAppearance"
         app:itemTextAppearanceActive="@style/menuTextAppearanceSelected"
         app:layout_constraintBottom_toBottomOf="parent"
