@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+
 class HomeActivity:AppCompatActivity(){
     private lateinit var notesRecycler:RecyclerView
     private var viewManager = LinearLayoutManager(this)

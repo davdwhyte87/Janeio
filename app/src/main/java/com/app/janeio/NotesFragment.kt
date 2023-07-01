@@ -1,6 +1,7 @@
 package com.app.janeio
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnScrollChangedListener
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +40,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BlankFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NotesFragment : Fragment() {
+class NotesFragment : Fragment(), View.OnTouchListener, ViewTreeObserver.OnScrollChangedListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -68,6 +71,7 @@ class NotesFragment : Fragment() {
         super.onResume()
         viewModel.getAllNotes()
     }
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -86,6 +90,11 @@ class NotesFragment : Fragment() {
 
 
         searchText = view.findViewById<EditText>(R.id.input_search)
+//        val targetScrollView = view.findViewById<NestedScrollView>(R.id.home_scroll_view)
+//
+//
+//        targetScrollView.setOnTouchListener(this)
+//        targetScrollView.viewTreeObserver.addOnScrollChangedListener(this)
 //        view.findViewById<Button>(R.id.add_btn).setOnClickListener{
 //           addData()
 //        }
@@ -127,20 +136,24 @@ class NotesFragment : Fragment() {
 //            }
 //        }
 
-        val targetScrollView = view.findViewById<ScrollView>(R.id.home_scroll_view)
-        targetScrollView.getViewTreeObserver().addOnScrollChangedListener(OnScrollChangedListener {
 
-            val scrollX: Int = targetScrollView.getScrollY()
-            if (scrollX > 565 ){
-                Log.d("TAG", "hit scool")
-                targetScrollView.setOnTouchListener(object: View.OnTouchListener{
-                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                        return true
-                    }
-                })
-            }
-            Log.d("TAG", "scrollX: $scrollX")
-        })
+//        targetScrollView.getViewTreeObserver().addOnScrollChangedListener(OnScrollChangedListener {
+//
+//            val scrollX: Int = targetScrollView.getScrollY()
+//            if (scrollX > 565 ){
+//                Log.d("TAG", "hit scool")
+//
+//
+//                targetScrollView.setOnTouchListener(object: View.OnTouchListener{
+//                    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//                        return true
+//                    }
+//
+//
+//                })
+//            }
+//            Log.d("TAG", "scrollX: $scrollX")
+//        })
 
 
 
@@ -222,6 +235,15 @@ class NotesFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        return true
+    }
+
+    override fun onScrollChanged() {
+
     }
 
 

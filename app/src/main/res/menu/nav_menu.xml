@@ -4,6 +4,7 @@
         android:id="@+id/note_nav"
         android:icon="@drawable/baseline_insert_drive_file_24"
         android:title="@string/title_notes"
+        android:iconTintMode="add"
         android:iconTint="@color/white"
 
         />
