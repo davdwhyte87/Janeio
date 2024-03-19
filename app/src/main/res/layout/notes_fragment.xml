@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +35,7 @@
         >
 
         <EditText
+            android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -52,15 +58,100 @@
 
 
     </RelativeLayout>
+<!--        <Button-->
+<!--            android:id="@+id/add_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/btn_add"-->
+<!--            />-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notes_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_a"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notes_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="450dp"
+                android:layout_marginTop="@dimen/margin_a"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+<!--            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--                android:id="@+id/create_new_btn"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_alignTop="@+id/notes_recycler"-->
+<!--                android:layout_alignBottom="@+id/notes_recycler"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginStart="163dp"-->
+<!--                android:layout_marginTop="395dp"-->
+<!--                android:layout_marginEnd="163dp"-->
+<!--                android:layout_marginBottom="7dp"-->
+<!--                android:backgroundTint="@color/blue"-->
+<!--                android:text="Create New"-->
+<!--                app:icon="@drawable/ic_plus"-->
+<!--                app:iconTint="@color/white" />-->
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/create_folder_btn"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_alignBottom="@+id/notes_recycler"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginStart="162dp"-->
+<!--                android:layout_marginEnd="164dp"-->
+<!--                android:layout_marginBottom="103dp"-->
+<!--                android:backgroundTint="@color/blue"-->
+<!--                android:src="@drawable/ic_folder"-->
+<!--                app:fabSize="normal"-->
+<!--                app:tint="@color/white" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/create_folder_btn_text"-->
+<!--                android:layout_width="78dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignBottom="@+id/notes_recycler"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginStart="156dp"-->
+<!--                android:layout_marginEnd="148dp"-->
+<!--                android:layout_marginBottom="79dp"-->
+<!--                android:text="@string/create_folder" />-->
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/create_note_btn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignBottom="@+id/notes_recycler"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginStart="165dp"-->
+<!--                android:layout_marginEnd="161dp"-->
+<!--                android:layout_marginBottom="187dp"-->
+<!--                android:backgroundTint="@color/blue"-->
+<!--                android:src="@drawable/ic_note"-->
+<!--                app:fabSize="normal"-->
+<!--                app:tint="@color/white" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/create_note_btn_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignBottom="@+id/notes_recycler"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginStart="162dp"-->
+<!--                android:layout_marginEnd="158dp"-->
+<!--                android:layout_marginBottom="162dp"-->
+<!--                android:text="@string/create_note" />-->
+        </RelativeLayout>
     </LinearLayout>
-</FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

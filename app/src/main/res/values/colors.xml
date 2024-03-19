@@ -8,7 +8,12 @@
     <color name="black">#121213</color>
     <color name="black2">#444547</color>
     <color name="blue">#0047AB</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="blue2">#3776CE</color>
+    <color name="dark_blue">#19273B</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white2">#EEEEEF</color>
     <color name="red">#F44336</color>
+    <color name="yellow">#E2D137</color>
+    <color name="seal">#4BDCE6</color>
     <color name="light_grey">#EEEEEF</color>
 </resources>
