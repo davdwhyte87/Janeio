@@ -1,5 +1,6 @@
 package com.app.janeio
 
+import Janeio.databinding.ActivityMainBinding
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,7 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.app.janeio.databinding.ActivityMainBinding
+
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.util.*

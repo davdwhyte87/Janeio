@@ -1,5 +1,6 @@
 package com.app.janeio
 
+import Janeio.R
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager

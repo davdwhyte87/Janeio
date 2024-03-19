@@ -1,5 +1,6 @@
 package com.app.janeio
 
+import Janeio.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 

@@ -1,5 +1,6 @@
 package com.app.janeio
 
+import Janeio.R
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -40,7 +41,7 @@ class AlarmReciever : BroadcastReceiver() {
         //make notification
         val i = Intent(context, DestinationActivity::class.java)
         intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent = PendingIntent.getActivity(context, 0,i,0)
+        val pendingIntent = PendingIntent.getActivity(context, 0,i, PendingIntent.FLAG_IMMUTABLE)
         //get todov item id from intent data
         val itemID =intent.getIntExtra("item_id",999);
         Log.i("XXXXXXHHHXX R item", itemID.toString())

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.janeio">
+ >
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -13,14 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".TodoItemActivity"
+            android:name="com.app.janeio.TodoItemActivity"
             android:exported="true" />
         <activity
-            android:name=".TodoListActivity"
+            android:name="com.app.janeio.TodoListActivity"
             android:exported="true">
 
         </activity>
-        <activity android:name=".HomeActivity"
+        <activity android:name="com.app.janeio.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,14 +29,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DestinationActivity"
+            android:name="com.app.janeio.DestinationActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.app.janeio.MainActivity"
             android:exported="true"
             android:label="@string/app_name" />
 
-        <receiver android:name=".AlarmReciever" />
+        <receiver android:name="com.app.janeio.AlarmReciever" />
     </application>
 
 </manifest>

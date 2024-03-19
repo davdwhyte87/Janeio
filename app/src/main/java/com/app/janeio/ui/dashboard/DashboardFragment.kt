@@ -1,5 +1,6 @@
 package com.app.janeio.ui.dashboard
 
+import Janeio.databinding.FragmentDashboardBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.app.janeio.databinding.FragmentDashboardBinding
+
 
 class DashboardFragment : Fragment() {
 

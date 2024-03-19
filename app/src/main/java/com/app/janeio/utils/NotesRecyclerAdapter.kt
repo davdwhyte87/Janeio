@@ -1,12 +1,13 @@
 package com.app.janeio.utils
 
+import Janeio.R
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.app.janeio.R
+
 import com.app.janeio.model.Note
 import com.app.janeio.view_models.NotesViewModel
 import org.w3c.dom.Text

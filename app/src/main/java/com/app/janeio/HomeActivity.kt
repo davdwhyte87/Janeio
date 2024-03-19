@@ -1,5 +1,6 @@
 package com.app.janeio
 
+import Janeio.R
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
