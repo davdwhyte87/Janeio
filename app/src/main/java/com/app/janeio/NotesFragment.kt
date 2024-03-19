@@ -1,6 +1,7 @@
 package com.app.janeio
 
 
+import Janeio.R
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
