@@ -16,6 +16,9 @@
             android:name="com.app.janeio.TodoItemActivity"
             android:exported="true" />
         <activity
+            android:name="com.app.janeio.SingleNoteActivity"
+            android:exported="true" />
+        <activity
             android:name="com.app.janeio.TodoListActivity"
             android:exported="true">
 
