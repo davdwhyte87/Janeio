@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.app.janeio.model.*
 
 
-@Database(entities = [Note::class, Folder::class], version = 6)
+@Database(entities = [Note::class, Folder::class], version = 6, exportSchema = false)
 //@TypeConverters(Converter::class)
 abstract class NotesDatabase :RoomDatabase(){
 

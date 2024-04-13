@@ -10,21 +10,25 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.Toolbar
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.janeio.database.NoteRepository
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.utils.NotesRecyclerAdapter
 import com.app.janeio.view_models.NotesViewModel
-import com.app.janeio.view_models.ViewModelFactory
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SingleFolderActivity : AppCompatActivity() {
+class SingleFolderActivity @Inject constructor() : AppCompatActivity() {
     lateinit var toolbar:Toolbar
     lateinit var backBtn:ImageButton
     lateinit var notesRecycler:RecyclerView
@@ -43,9 +47,9 @@ class SingleFolderActivity : AppCompatActivity() {
 
         notesRecycler = findViewById(R.id.folder_notes_recycler)
             //setup viee model
-        val viewModelFactory = ViewModelFactory(application)
+//        val viewModelFactory = ViewModelFactory(application, noteRepository = )
 
-        viewModel = viewModelFactory.create(NotesViewModel::class.java)
+        val viewModel:NotesViewModel by viewModels()
 
         // get single folder fata
         checkNoteData()

@@ -3,12 +3,14 @@ package com.app.janeio.view_models
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.app.janeio.database.NoteRepository
+import javax.inject.Inject
 
 
-class ViewModelFactory(private val application: Application): ViewModelProvider.Factory {
+class ViewModelFactory @Inject constructor( val application: Application, val noteRepository: NoteRepository): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(NotesViewModel::class.java)){
-            return NotesViewModel(application) as T
+            return NotesViewModel(application, noteRepository) as T
         }
 
         else if(modelClass.isAssignableFrom(FolderViewModel::class.java)){

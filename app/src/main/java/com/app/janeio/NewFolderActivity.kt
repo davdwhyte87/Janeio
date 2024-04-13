@@ -1,6 +1,7 @@
 package com.app.janeio
 
 import Janeio.R
+import android.app.Application
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,25 +10,28 @@ import android.view.Menu
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.Toolbar
+import com.app.janeio.database.NoteRepository
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Folder
 import com.app.janeio.model.Note
 import com.app.janeio.view_models.FolderViewModel
 import com.app.janeio.view_models.NotesViewModel
-import com.app.janeio.view_models.ViewModelFactory
+
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import javax.inject.Inject
 
-class NewFolderActivity : AppCompatActivity() {
+class NewFolderActivity @Inject constructor(val xapp: Application, val noteRepository: NoteRepository) : AppCompatActivity() {
     lateinit var backBtn: ImageButton
     lateinit var toolbar:Toolbar
     lateinit var folderNameInput:EditText
     lateinit var btnSaveFolder:Button
-    lateinit var notesViewModel: NotesViewModel
+    val notesViewModel:NotesViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +54,9 @@ class NewFolderActivity : AppCompatActivity() {
         }
 
         // view moddel setup
-        val factory=ViewModelFactory(application)
-        notesViewModel = factory.create(NotesViewModel::class.java)
+//        val factory=ViewModelFactory(xapp, noteRepository)
+//        notesViewModel = factory.create(NotesViewModel::class.java)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

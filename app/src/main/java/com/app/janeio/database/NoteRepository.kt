@@ -4,16 +4,18 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.app.janeio.model.Note
 import com.app.janeio.model.NoteDao
+import com.app.janeio.model.NoteDao_Impl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class NoteRepository(application: Application) {
-    private var noteDao:NoteDao
+class NoteRepository @Inject constructor(val appx: Application, val noteDao:NoteDao) {
 
-    private val database= NotesDatabase.getInstance(application)
+
+    val database= NotesDatabase.getInstance(appx)
     lateinit var allNotes:Flow<List<Note>>
     init {
-        noteDao=database.notesDao()
+         //noteDao=database.notesDao()
 //        allNotes = noteDao.getAllNotes()
           allNotes= noteDao.getAllNotes()
 

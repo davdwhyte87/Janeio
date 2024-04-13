@@ -6,12 +6,15 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name="com.app.janeio.Application"
         android:allowBackup="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        >
         <activity
             android:name="com.app.janeio.TodoItemActivity"
             android:exported="true" />
@@ -24,14 +27,16 @@
 
         </activity>
         <activity android:name="com.app.janeio.MainActivity2"
-            android:exported="true"/>
-        <activity android:name="com.app.janeio.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.app.janeio.HomeActivity"
+            android:exported="true">
+
         </activity>
         <activity
             android:name="com.app.janeio.DestinationActivity"

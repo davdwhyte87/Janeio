@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity"
+    tools:context="com.app.janeio.HomeActivity"
     android:orientation="vertical"
     >
     <FrameLayout
@@ -144,8 +144,7 @@
         android:backgroundTint="@color/white"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
-        app:itemTextAppearanceInactive="@style/menuTextAppearance"
-        app:itemTextAppearanceActive="@style/menuTextAppearanceSelected"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/nav_menu" />
 

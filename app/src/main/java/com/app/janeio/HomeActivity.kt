@@ -1,6 +1,7 @@
 package com.app.janeio
 
 import Janeio.R
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,17 +12,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.janeio.database.NoteRepository
 import com.app.janeio.model.Note
 import com.app.janeio.utils.NotesRecyclerAdapter
 import com.app.janeio.view_models.NotesViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class HomeActivity:AppCompatActivity(){
+
+class HomeActivity @Inject constructor(val xapp: Application, val noteRepository: NoteRepository):AppCompatActivity(){
     private lateinit var notesRecycler:RecyclerView
     private var viewManager = LinearLayoutManager(this)
     private lateinit var viewModel:NotesViewModel
@@ -40,7 +45,7 @@ class HomeActivity:AppCompatActivity(){
 
         // setup fragment
 
-        loadFragment(NotesFragment())
+        loadFragment(NotesFragment(xapp, noteRepository))
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener {
             Log.i("XXXXXXXXX",it.itemId.toString())
@@ -48,7 +53,7 @@ class HomeActivity:AppCompatActivity(){
 
                 R.id.note_nav->{
 
-                    loadFragment(NotesFragment())
+                    loadFragment(NotesFragment(xapp, noteRepository))
                     true
                 }
                 R.id.todo_nav->{

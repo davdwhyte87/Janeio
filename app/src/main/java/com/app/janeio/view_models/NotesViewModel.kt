@@ -9,16 +9,22 @@ import com.app.janeio.database.NotesDatabase
 import com.app.janeio.model.Note
 import com.app.janeio.model.NoteDao
 import com.app.janeio.model.TodoItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
+import javax.inject.Inject
 
-class NotesViewModel(application: Application) :AndroidViewModel(application) {
+
+
+@HiltViewModel
+class NotesViewModel @Inject constructor(application: Application, val noteRepository: NoteRepository) :AndroidViewModel(application) {
     private var noteDao:NoteDao
     private var database:NotesDatabase
-    private val noteRepository: NoteRepository
+    //private val noteRepository: NoteRepository
     val defNote = Note(null,"","","","","",null)
     var defNotesList:List<Note> = (listOf(defNote))
     private val _notelist = MutableStateFlow(defNotesList)
@@ -33,7 +39,7 @@ class NotesViewModel(application: Application) :AndroidViewModel(application) {
         database = NotesDatabase.getInstance(application)
         noteDao = database.notesDao()
 
-        noteRepository = NoteRepository(application)
+       // noteRepository = NoteRepository(application)
 
     }
 //    @OptIn(DelicateCoroutinesApi::class)

@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toolbar
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.core.widget.addTextChangedListener
@@ -18,7 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.view_models.NotesViewModel
-import com.app.janeio.view_models.ViewModelFactory
+
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -52,9 +53,9 @@ class SingleNoteActivity : AppCompatActivity() {
         dateTime = findViewById(R.id.date_time)
 
         // setup view models
-        val factory = ViewModelFactory(application)
-        viewModel = factory.create(NotesViewModel::class.java)
-
+//        val factory = ViewModelFactory(application)
+//        viewModel = factory.create(NotesViewModel::class.java)
+        val viewModel:NotesViewModel by viewModels()
 
 
 

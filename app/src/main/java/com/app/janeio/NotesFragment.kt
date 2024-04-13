@@ -3,6 +3,7 @@ package com.app.janeio
 
 import Janeio.R
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,20 +16,24 @@ import android.view.ViewTreeObserver.OnScrollChangedListener
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.janeio.database.NoteRepository
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.utils.NotesRecyclerAdapter
 import com.app.janeio.view_models.NotesViewModel
-import com.app.janeio.view_models.ViewModelFactory
+
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,13 +46,13 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BlankFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NotesFragment : Fragment(), View.OnTouchListener, ViewTreeObserver.OnScrollChangedListener {
+class NotesFragment @Inject constructor(val xapplication: Application, val noteRepository: NoteRepository) : Fragment(), View.OnTouchListener, ViewTreeObserver.OnScrollChangedListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var notesRecycler:RecyclerView
     private var viewManager = LinearLayoutManager(this.context)
-
+    val notesViewModel:NotesViewModel by viewModels()
     lateinit var searchText:EditText
     private lateinit var viewModel: NotesViewModel
 
@@ -83,9 +88,10 @@ class NotesFragment : Fragment(), View.OnTouchListener, ViewTreeObserver.OnScrol
         val view = inflater.inflate(R.layout.home_fragment2, container, false)
         notesRecycler = view.findViewById(R.id.notes_recycler)
         val application = requireNotNull(this.context).applicationContext
-        val factory = ViewModelFactory(requireActivity().application)
+//        val factory = ViewModelFactory(xapplication, noteRepository)
 //        viewModel = ViewModelProvider(this).get(NotesViewModel::class.java)
-        viewModel = factory.create(NotesViewModel::class.java)
+//        viewModel = factory.create(NotesViewModel::class.java)
+
         initailizeAdapter()
         populateData()
 
@@ -228,14 +234,14 @@ class NotesFragment : Fragment(), View.OnTouchListener, ViewTreeObserver.OnScrol
          * @return A new instance of fragment BlankFragment.
          */
         // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NotesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+//@JvmStatic
+        //fun newInstance(param1: String, param2: String) =
+//            NotesFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
     }
 
     @SuppressLint("ClickableViewAccessibility")
