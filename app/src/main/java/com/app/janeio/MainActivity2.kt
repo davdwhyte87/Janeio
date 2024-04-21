@@ -80,13 +80,22 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.app.janeio.components.cBackTopBar
 import com.app.janeio.model.Note
-import com.app.janeio.screens.HomeScreen
+
+import com.app.janeio.screens.BottomBarScreen
+import com.app.janeio.screens.NotesScreen
+
 import com.app.janeio.ui.theme.AppTheme
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.LightPurple
 import com.app.janeio.ui.theme.White
+import com.app.janeio.view_models.AppViewModel
 import com.app.janeio.view_models.NotesViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,60 +120,67 @@ class MainActivity2: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         setContent {
+            val navController = rememberNavController()
+            val appViewModel:AppViewModel = hiltViewModel()
 
-                App()
-
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun App(){
-    AppTheme {
-        Surface(
-            modifier = Modifier
-                .fillMaxSize(),
-            color = MaterialTheme.colorScheme.primary,
-
-            ) {
-
-            Scaffold(
-                topBar = { topBar() },
-                modifier = Modifier
-                    .padding(all = 0.dp)
-                    .background(color = MaterialTheme.colorScheme.primary),
-                bottomBar = {
-                    BottomAppBar(
-                        contentColor = MaterialTheme.colorScheme.primary,
-                        containerColor =MaterialTheme.colorScheme.primary ,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(all = 0.dp)
-                            .background(
-                                MaterialTheme.colorScheme.primary,
-
-                                )
+            AppTheme {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    color = MaterialTheme.colorScheme.primary,
 
                     ) {
 
-                        BottomNav()
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.tertiary,
-                floatingActionButton = {
-                    AddButton {
+                    Scaffold(
+                        topBar = {
+                            if(appViewModel.showTopNav.collectAsState().value){
+                                topBar()
+                            }
+                            if(appViewModel.showBackAppBar.collectAsState().value){
+                                cBackTopBar()
+                            }
+                                 },
+                        modifier = Modifier
+                            .padding(all = 0.dp)
+                            .background(color = MaterialTheme.colorScheme.primary),
+                        bottomBar = {
+                            if (appViewModel.showButtomNav.collectAsState().value){
+                                BottomAppBar(
+                                    contentColor = MaterialTheme.colorScheme.primary,
+                                    containerColor = MaterialTheme.colorScheme.primary ,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(all = 0.dp)
+                                        .background(
+                                            MaterialTheme.colorScheme.primary,
 
-                    }
-                },
+                                            )
 
-                floatingActionButtonPosition = FabPosition.Center,
-            ) { it ->
+                                ) {
+
+
+                                    BottomNav(navController)
+                                }
+                            }
+
+                        },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        floatingActionButton = {
+                            if(appViewModel.showButtomNav.collectAsState().value){
+                                AddButton {
+                                    Log.d("OPen Dialog XXXXXX", "")
+
+                                }
+                            }
+
+                        },
+
+                        floatingActionButtonPosition = FabPosition.Center,
+                    ) { it ->
+
+
                 Column(
                     modifier = Modifier
                         .padding(it)
@@ -172,18 +188,25 @@ fun App(){
                     ,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                        searchBar()
+//                    searchBar()
+//
+//                    //notesNFoldersList()
+//                    notesNFoldersListPrev()
+                      bottomNavGraph(navController = navController)
 
-                        //notesNFoldersList()
-                    notesNFoldersListPrev()
+                }
+                    }
+
 
                 }
             }
 
-
         }
     }
 }
+
+
+
 
 //@Composable
 //fun getNotesList(isPreview:Boolean):List<Note>{
@@ -204,9 +227,16 @@ fun App(){
 //    return notesViewModel.notesList.collectAsState().value
 //}
 
-@Preview
 @Composable
-fun BottomNav(){
+fun BottomNav(navController: NavHostController){
+
+    val screens = listOf(
+        BottomBarScreen.Notes,
+        BottomBarScreen.Todo
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     val navItems = listOf(
         BottomNavigationItem(
             title = "Notes",
@@ -240,22 +270,26 @@ fun BottomNav(){
     )
 
 
-    NavigationBar(containerColor = Black2,  ){
+    NavigationBar(containerColor = Black2,   ){
 
-        navItems.forEachIndexed{ index, item ->
-            Log.d("Item name ...", item.title)
+        screens.forEachIndexed{ index, item ->
+
 
             NavigationBarItem(
                 colors = navColors,
                 label = { Text(text = item.title) },
-                selected = (index == selectedItem) ,
+                selected =currentDestination?.hierarchy?.any{
+                    it.route == item.route
+                }==true,
                 onClick = {
+                    Log.d("Item name ...", item.title)
                     selectedItem = index
+                    navController.navigate(item.route)
                 },
 
                 alwaysShowLabel = true,
                 icon = {
-                    androidx.compose.material3.Icon(
+                    Icon(
                         imageVector = if (index == selectedItem) item.selectedIcon else item.unselectedIcon,
                         contentDescription = item.title,
                         modifier = Modifier.size(34.dp)
@@ -271,8 +305,10 @@ fun BottomNav(){
 
 @Composable
 fun AddButton(onClick: () -> Unit) {
+    val appViewModel = hiltViewModel<AppViewModel>()
+
     FloatingActionButton(
-        onClick = { onClick() },
+        onClick = { appViewModel.openNewNotesDialog() },
         shape = CircleShape,
         contentColor = White,
         containerColor = LightPurple,
@@ -286,145 +322,29 @@ fun AddButton(onClick: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun topBar(){
-   TopAppBar(
-       colors = TopAppBarDefaults.topAppBarColors(
-           containerColor = MaterialTheme.colorScheme.primary,
-           navigationIconContentColor = MaterialTheme.colorScheme.secondary,
-           titleContentColor = MaterialTheme.colorScheme.secondary
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            navigationIconContentColor = MaterialTheme.colorScheme.secondary,
+            titleContentColor = MaterialTheme.colorScheme.secondary
 
-       ),
-       title = {
-       Row (verticalAlignment = Alignment.CenterVertically,
-           horizontalArrangement = Arrangement.SpaceBetween,
-           modifier = Modifier
-               .fillMaxWidth()
-       ) {
-           Icon(imageVector = Icons.Filled.FilterList, contentDescription = null)
-           Text(text = "Notes", fontSize = 20.sp)
-           Image(painter = painterResource(id = R.drawable.propic2), contentDescription =null,
-               modifier = Modifier
-                   .clip(CircleShape)
-                   .padding(1.dp, 1.dp)
-                   .size(50.dp, 50.dp),
-               contentScale = ContentScale.FillWidth)
-
-       }
-   })
-}
-
-
-@Composable
-fun searchBar(){
-    var text by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    TextField(
-        value = text,
-        onValueChange = {text = it},
-        label = { Text(text = "Search")},
-        leadingIcon = {Icon(Icons.Outlined.Search, contentDescription = null,
-            modifier = Modifier.size(35.dp)
-        )},
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary, shape = RectangleShape)
-            .border(width = 2.dp, color = MaterialTheme.colorScheme.secondary)
-        ,
-        singleLine = true,
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.secondary,
-            unfocusedContainerColor = MaterialTheme.colorScheme.primary,
-            unfocusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
-            focusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
-            focusedLabelColor = MaterialTheme.colorScheme.secondary,
-            unfocusedLabelColor = MaterialTheme.colorScheme.secondary
-
-        )
-    )
-}
-
-data class NoteItem(
-    val title:String,
-    val summary:String,
-    val type: Int
-)
-
-
-@Composable
-fun notesNFoldersList(){
-
-    val notesViewModel = hiltViewModel<NotesViewModel>()
-    notesViewModel.getAllNotes()
-
-    //val notes = notesViewModel.notesList.collectAsState()
-    val notes = notesViewModel.notesList.collectAsState()
-    Log.d("NOTES COMP *******", notes.toString())
-
-//    val filesNFolders = listOf()
-    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(notes.value){item->
-            NoteItemView(data = item)
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun notesNFoldersListPrev(){
-
-    //val notesViewModel = hiltViewModel<NotesViewModel>()
-    //notesViewModel.getAllNotes()
-
-    //val notes = notesViewModel.notesList.collectAsState()
-
-
-
-    val filesNFolders = listOf(
-        Note(
-            id = null,
-            CreatedAt = "",
-            FolderID = 0,
-            Note = "Notes sameple data",
-            Title = "This is dope",
-            UpdatedAt = "3:44pm",
-            Type = "fold"
         ),
-        Note(
-            id = null,
-            CreatedAt = "",
-            FolderID = 0,
-            Note = "Notes sameple data",
-            Title = "This is dope",
-            UpdatedAt = "3:44pm",
-            Type = "fold"
-        )
-    )
-    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(filesNFolders){item->
-            NoteItemView(data = item)
-        }
-    }
+        title = {
+            Row (verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Icon(imageVector = Icons.Filled.FilterList, contentDescription = null)
+                Text(text = "Notes", fontSize = 20.sp)
+                Image(painter = painterResource(id = R.drawable.propic2), contentDescription =null,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .padding(1.dp, 1.dp)
+                        .size(50.dp, 50.dp),
+                    contentScale = ContentScale.FillWidth)
+
+            }
+        })
 }
 
-
-
-@Composable
-fun NoteItemView(data:Note){
-
-    Box (modifier = Modifier
-        .fillMaxWidth()
-        .background(Black2)
-        .padding(10.dp)
-
-    ) {
-        Column {
-            Text(text = data.Title, fontSize = 16.sp, color = White)
-            Text(text = data.Note, fontSize = 10.sp, color = LightGrey)
-
-        }
-    }
-
-}
