@@ -94,7 +94,7 @@ import com.app.janeio.ui.theme.AppTheme
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.LightPurple
-import com.app.janeio.ui.theme.White
+import com.app.janeio.ui.theme.XWhite
 import com.app.janeio.view_models.AppViewModel
 import com.app.janeio.view_models.NotesViewModel
 
@@ -123,6 +123,7 @@ class MainActivity2: ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val appViewModel:AppViewModel = hiltViewModel()
+            val notesViewModel:NotesViewModel = hiltViewModel()
 
             AppTheme {
                 Surface(
@@ -138,7 +139,7 @@ class MainActivity2: ComponentActivity() {
                                 topBar()
                             }
                             if(appViewModel.showBackAppBar.collectAsState().value){
-                                cBackTopBar()
+                                cBackTopBar(navController, appViewModel, notesViewModel)
                             }
                                  },
                         modifier = Modifier
@@ -260,12 +261,12 @@ fun BottomNav(navController: NavHostController){
     }
 
     val navColors = NavigationBarItemColors(
-        selectedIconColor = White,
+        selectedIconColor = XWhite,
         unselectedIconColor = LightGrey,
-        selectedTextColor = White,
+        selectedTextColor = XWhite,
         unselectedTextColor = LightGrey,
-        disabledIconColor = White,
-        disabledTextColor = White,
+        disabledIconColor = XWhite,
+        disabledTextColor = XWhite,
         selectedIndicatorColor = Black2
     )
 
@@ -310,7 +311,7 @@ fun AddButton(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = { appViewModel.openNewNotesDialog() },
         shape = CircleShape,
-        contentColor = White,
+        contentColor = XWhite,
         containerColor = LightPurple,
         modifier = Modifier.padding(all=0.dp)
     ) {

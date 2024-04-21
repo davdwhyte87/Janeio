@@ -29,6 +29,10 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     var defNotesList:List<Note> = (listOf(defNote))
     private val _notelist = MutableStateFlow(defNotesList)
     var notesList = _notelist.asStateFlow()
+
+    private val _tempNote = MutableStateFlow(defNote)
+    val tempNote = _tempNote.asStateFlow()
+
 //    var newList :MutableList<Note>
 
     private val _singleNote= MutableStateFlow(defNote)
@@ -53,6 +57,17 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
 //        notesList.value = newList
         getAllNotes()
 
+    }
+    fun saveTempNote(){
+        viewModelScope.launch{
+            withContext(Dispatchers.IO){
+                noteRepository.insert(_tempNote.value)
+            }
+        }
+    }
+
+    fun updateTempNote(note:Note){
+        _tempNote.value = note
     }
 
     fun update(note:Note){

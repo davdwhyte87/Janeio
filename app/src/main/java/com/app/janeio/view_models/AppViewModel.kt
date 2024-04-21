@@ -31,6 +31,16 @@ class AppViewModel @Inject constructor() :ViewModel(){
     private  val _showBackAppBar = MutableStateFlow(false)
     val showBackAppBar = _showBackAppBar.asStateFlow()
 
+    private val _saveNoteData = MutableStateFlow(false)
+    val saveNoteData = _saveNoteData.asStateFlow()
+
+
+    fun saveNoteDataEvent(){
+        _saveNoteData.value = true
+    }
+    fun stopSaveNoteData(){
+        _saveNoteData.value = false
+    }
     fun openNewNotesDialog(){
         Log.d("ViewModelCalled *******", "")
         viewModelScope.launch {
@@ -41,6 +51,14 @@ class AppViewModel @Inject constructor() :ViewModel(){
     }
 
     fun showTopNav(){
+        _showTopNav.value = true
+    }
+
+    fun resetToHome(){
+        _isNewNotesDialogOpen.value = false
+        _saveNoteData.value = false
+        _showBackAppBar.value= false
+        _showButtomNav.value = true
         _showTopNav.value = true
     }
     fun hideTopNav(){

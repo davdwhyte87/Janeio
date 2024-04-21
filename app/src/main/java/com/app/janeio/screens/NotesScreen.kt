@@ -70,7 +70,7 @@ import com.app.janeio.ui.theme.AppTheme
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.LightPurple
-import com.app.janeio.ui.theme.White
+import com.app.janeio.ui.theme.XWhite
 import com.app.janeio.view_models.AppViewModel
 import com.app.janeio.view_models.NotesViewModel
 
@@ -215,7 +215,7 @@ fun NoteItemView(data: Note){
 
     ) {
         Column {
-            Text(text = data.Title, fontSize = 16.sp, color = White)
+            Text(text = data.Title, fontSize = 16.sp, color = XWhite)
             Text(text = data.Note, fontSize = 10.sp, color = LightGrey)
 
         }
