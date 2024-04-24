@@ -1,7 +1,9 @@
 package com.app.janeio.screens
 
 import Janeio.R
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -63,6 +65,7 @@ import androidx.navigation.compose.rememberNavController
 
 import com.app.janeio.BottomNavigationItem
 import com.app.janeio.bottomNavGraph
+import com.app.janeio.components.NewFolderDialog
 import com.app.janeio.components.NotesDialog
 import com.app.janeio.model.Note
 
@@ -75,9 +78,11 @@ import com.app.janeio.view_models.AppViewModel
 import com.app.janeio.view_models.NotesViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotesScreen(
 appViewModel: AppViewModel,
+notesViewModel: NotesViewModel,
 navController:NavHostController
 ){
 
@@ -93,6 +98,7 @@ navController:NavHostController
         searchBar()
         notesNFoldersList()
         NotesDialog(appViewModel, navController)
+        NewFolderDialog(appViewModel, notesViewModel)
     }
 }
 

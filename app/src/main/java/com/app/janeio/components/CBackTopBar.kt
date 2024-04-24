@@ -54,7 +54,6 @@ fun cBackTopBar(navController:NavHostController,
             containerColor = MaterialTheme.colorScheme.primary,
             navigationIconContentColor = MaterialTheme.colorScheme.secondary,
             titleContentColor = MaterialTheme.colorScheme.secondary
-
         ),
         title = {
             Row (verticalAlignment = Alignment.CenterVertically,

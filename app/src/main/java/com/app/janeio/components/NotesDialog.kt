@@ -150,7 +150,10 @@ fun NotesDialog(appViewModel:AppViewModel, navController: NavHostController){
                                 .clickable(
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(color = Black1),
-                                    onClick = {}
+                                    onClick = {
+                                        appViewModel.newFolderDialog(true)
+                                        appViewModel.closeNewNotesDialog()
+                                    }
                                 )
                             ){
                                 Icon(imageVector = Icons.Outlined.Folder,

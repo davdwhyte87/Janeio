@@ -35,6 +35,14 @@ class AppViewModel @Inject constructor() :ViewModel(){
     val saveNoteData = _saveNoteData.asStateFlow()
 
 
+    private val _isNewFolderDialogOpen = MutableStateFlow(true)
+    val isNewFolderDialogOpen = _isNewFolderDialogOpen.asStateFlow()
+
+
+    fun newFolderDialog(data:Boolean){
+        _isNewFolderDialogOpen.value = data
+    }
+
     fun saveNoteDataEvent(){
         _saveNoteData.value = true
     }

@@ -24,7 +24,7 @@ fun bottomNavGraph(navController:NavHostController){
 
        composable(route=BottomBarScreen.Notes.route){
           appViewModel.resetToHome()
-           NotesScreen(appViewModel, navController)
+           NotesScreen(appViewModel,notesViewModel, navController)
        }
        composable(route=BottomBarScreen.Todo.route){
            TodoScreen()

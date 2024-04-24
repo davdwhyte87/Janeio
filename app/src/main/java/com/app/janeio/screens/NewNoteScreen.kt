@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 import com.app.janeio.ui.theme.XWhite
 import com.app.janeio.view_models.AppViewModel
@@ -68,7 +69,7 @@ fun NewNoteScreen (appViewModel: AppViewModel,
                 var note = Note(
                     Title = title,
                     Note = noteData,
-                    Type = "0",
+                    Type =   FileType.FOLDER.toString(),
                     CreatedAt = formatted,
                     UpdatedAt = formatted,
                     FolderID = null,
@@ -96,7 +97,7 @@ fun NewNoteScreen (appViewModel: AppViewModel,
                 var note = Note(
                     Title = title,
                     Note = noteData,
-                    Type = "0",
+                    Type =   FileType.FOLDER.toString(),
                     CreatedAt = formatted,
                     UpdatedAt = formatted,
                     FolderID = null,
