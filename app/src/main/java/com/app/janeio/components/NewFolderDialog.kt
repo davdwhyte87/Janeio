@@ -50,7 +50,10 @@ fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:NotesViewModel){
     when {
         newFolderDialogOpen ->{
             Dialog(
-                onDismissRequest = {appViewModel.closeNewNotesDialog()},
+                onDismissRequest = {
+                    appViewModel.closeNewNotesDialog()
+                    appViewModel.newFolderDialog(false)
+                                   },
                 properties = DialogProperties(
                     usePlatformDefaultWidth = false,
                     dismissOnClickOutside = true

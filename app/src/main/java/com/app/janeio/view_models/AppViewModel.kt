@@ -15,6 +15,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+data class AppState(
+    val isNotesListCheckBox:Boolean){
+    companion object{
+        fun default():AppState{
+            return AppState(
+                isNotesListCheckBox = false
+            )
+        }
+    }
+}
+
+
 
 @HiltViewModel
 class AppViewModel @Inject constructor() :ViewModel(){
@@ -38,6 +50,14 @@ class AppViewModel @Inject constructor() :ViewModel(){
     private val _isNewFolderDialogOpen = MutableStateFlow(true)
     val isNewFolderDialogOpen = _isNewFolderDialogOpen.asStateFlow()
 
+    private  val _isNotesListCheckBox = MutableStateFlow(false)
+    val isNotesListCheckBox = _isNotesListCheckBox.asStateFlow()
+
+
+
+    fun notesListCheckBox(data:Boolean){
+        _isNotesListCheckBox.value = data
+    }
 
     fun newFolderDialog(data:Boolean){
         _isNewFolderDialogOpen.value = data

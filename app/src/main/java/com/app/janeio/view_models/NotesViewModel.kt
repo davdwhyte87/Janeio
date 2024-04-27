@@ -3,6 +3,7 @@ package com.app.janeio.view_models
 
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.app.janeio.database.NoteRepository
 import com.app.janeio.database.NotesDatabase
@@ -32,6 +33,9 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
 
     private val _tempNote = MutableStateFlow(defNote)
     val tempNote = _tempNote.asStateFlow()
+
+    private val _tempMultiDeleteNotes = MutableStateFlow(listOf(defNote))
+    val tempMultiDeleteNotes = _tempMultiDeleteNotes.asStateFlow()
 
 //    var newList :MutableList<Note>
 
@@ -64,6 +68,34 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
                 noteRepository.insert(_tempNote.value)
             }
         }
+    }
+
+
+    fun multiDelete(){
+        viewModelScope.launch{
+            withContext(Dispatchers.IO){
+                val notes = _tempMultiDeleteNotes.value
+                notes.forEach {
+                    noteRepository.delete(it)
+                }
+                _tempMultiDeleteNotes.value = listOf()
+            }
+        }
+
+    }
+
+    fun updateMultiTempDeleteLIst(note:Note){
+       val list =  _tempMultiDeleteNotes.value
+        val newList = list.toMutableList()
+        newList.add(note)
+        _tempMultiDeleteNotes.value = newList
+        Log.d("Update List", _tempMultiDeleteNotes.value.toString())
+    }
+    fun removeFromMultiTempDeleteList(note:Note){
+        val list =  _tempMultiDeleteNotes.value
+        val newList = list.toMutableList()
+        newList.remove(note)
+        _tempMultiDeleteNotes.value = newList
     }
 
     fun updateTempNote(note:Note){

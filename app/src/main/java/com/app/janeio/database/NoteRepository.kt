@@ -25,6 +25,10 @@ class NoteRepository @Inject constructor(val appx: Application, val noteDao:Note
         noteDao.insert(note)
     }
 
+    suspend fun delete(note: Note){
+        noteDao.delete(note)
+    }
+
     suspend fun getAll(): Flow<List<Note>> {
         return noteDao.getAllNotes()
     }

@@ -4,12 +4,16 @@ import Janeio.R
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,17 +24,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FormatListNumbered
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -52,8 +62,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.DefaultTintColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,6 +79,7 @@ import com.app.janeio.BottomNavigationItem
 import com.app.janeio.bottomNavGraph
 import com.app.janeio.components.NewFolderDialog
 import com.app.janeio.components.NotesDialog
+import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
 
 import com.app.janeio.ui.theme.AppTheme
@@ -96,7 +109,8 @@ navController:NavHostController
 
 
         searchBar()
-        notesNFoldersList()
+        DeleteButton(appViewModel, notesViewModel)
+        notesNFoldersList(appViewModel)
         NotesDialog(appViewModel, navController)
         NewFolderDialog(appViewModel, notesViewModel)
     }
@@ -104,8 +118,34 @@ navController:NavHostController
 
 
 
+@Composable
+fun DeleteButton(appViewModel: AppViewModel, notesViewModel: NotesViewModel){
+    val isListCheckBox = appViewModel.isNotesListCheckBox.collectAsState().value
+    Column (modifier = Modifier.fillMaxWidth()){
 
+        if(isListCheckBox){
+            IconButton(
+                onClick = {
+                    Log.d("Delete Button clicked", "clicked")
+                    notesViewModel.multiDelete()
+                    appViewModel.notesListCheckBox(false)
+                },
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .background(color = Black2)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    modifier = Modifier.size(24.dp),
+                    contentDescription ="",
+                    tint = XWhite
+                )
+            }
+        }
 
+    }
+
+}
 
 @Composable
 fun searchBar(){
@@ -152,8 +192,9 @@ data class NoteItem(
 )
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun notesNFoldersList(){
+fun notesNFoldersList(appViewModel: AppViewModel){
 
     val notesViewModel = hiltViewModel<NotesViewModel>()
     notesViewModel.getAllNotes()
@@ -165,54 +206,75 @@ fun notesNFoldersList(){
 //    val filesNFolders = listOf()
     LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
         items(notes.value){item->
-            NoteItemView(data = item)
+            NoteItemView(data = item,
+                modifier = Modifier.combinedClickable (
+                    onClick = {},
+                    onLongClick = {
+                        Log.d("Long Press XXXX", "pressed")
+                        appViewModel.notesListCheckBox(true)
+                    }
+                ), appViewModel, notesViewModel
+            )
         }
     }
 }
 
 
-@Preview
+//@OptIn(ExperimentalFoundationApi::class)
+//@Preview
+//@Composable
+//fun notesNFoldersListPrev(){
+//
+//    //val notesViewModel = hiltViewModel<NotesViewModel>()
+//    //notesViewModel.getAllNotes()
+//
+//    //val notes = notesViewModel.notesList.collectAsState()
+//
+//
+//
+//    val filesNFolders = listOf(
+//        Note(
+//            id = null,
+//            CreatedAt = "",
+//            FolderID = 0,
+//            Note = "Notes sameple data",
+//            Title = "This is dope",
+//            UpdatedAt = "3:44pm",
+//            Type = "fold"
+//        ),
+//        Note(
+//            id = null,
+//            CreatedAt = "",
+//            FolderID = 0,
+//            Note = "Notes sameple data",
+//            Title = "This is dope",
+//            UpdatedAt = "3:44pm",
+//            Type = "fold"
+//        )
+//    )
+//    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
+//        items(filesNFolders){item->
+//            NoteItemView(data = item,
+//                modifier = Modifier.combinedClickable (
+//                    onClick = {},
+//                    onLongClick = {
+//                        Log.d("Long Press XXXX", "pressed")
+//
+//                    }
+//                ),
+//                app
+//            )
+//        }
+//    }
+//}
+
+
+
 @Composable
-fun notesNFoldersListPrev(){
-
-    //val notesViewModel = hiltViewModel<NotesViewModel>()
-    //notesViewModel.getAllNotes()
-
-    //val notes = notesViewModel.notesList.collectAsState()
-
-
-
-    val filesNFolders = listOf(
-        Note(
-            id = null,
-            CreatedAt = "",
-            FolderID = 0,
-            Note = "Notes sameple data",
-            Title = "This is dope",
-            UpdatedAt = "3:44pm",
-            Type = "fold"
-        ),
-        Note(
-            id = null,
-            CreatedAt = "",
-            FolderID = 0,
-            Note = "Notes sameple data",
-            Title = "This is dope",
-            UpdatedAt = "3:44pm",
-            Type = "fold"
-        )
-    )
-    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(filesNFolders){item->
-            NoteItemView(data = item)
-        }
-    }
-}
-
-
-
-@Composable
-fun NoteItemView(data: Note){
+fun NoteItemView(data: Note, modifier: Modifier,
+                 appViewModel: AppViewModel,
+                 notesViewModel: NotesViewModel
+){
 
     Box (modifier = Modifier
         .fillMaxWidth()
@@ -220,9 +282,57 @@ fun NoteItemView(data: Note){
         .padding(10.dp)
 
     ) {
-        Column {
-            Text(text = data.Title, fontSize = 16.sp, color = XWhite)
-            Text(text = data.Note, fontSize = 10.sp, color = LightGrey)
+        Column (modifier = modifier ) {
+
+
+            Row (
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                var isChecked by rememberSaveable {
+                    mutableStateOf(false)
+                }
+
+                Text(text = data.Title, fontSize = 16.sp, color = XWhite)
+                val isListCheckBox = appViewModel.isNotesListCheckBox.collectAsState().value
+                if (isListCheckBox){
+                    Checkbox(
+                        modifier = Modifier,
+                        checked = isChecked,
+                        onCheckedChange = {
+                            if (isChecked) {
+                                isChecked = false
+                                notesViewModel.removeFromMultiTempDeleteList(data)
+                            }else{
+                                isChecked = true
+                                notesViewModel.updateMultiTempDeleteLIst(data)
+                            }
+
+                                          },
+                        colors = CheckboxDefaults.colors(
+                            uncheckedColor = XWhite,
+
+                            )
+                    )
+                }
+
+            }
+
+            Text(
+                text = data.Note,
+                fontSize = 10.sp,
+                color = LightGrey,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            if (data.Type == FileType.FOLDER.name){
+                Icon(
+                    imageVector = Icons.Outlined.Folder,
+                    contentDescription = "" ,
+                    tint = XWhite
+                )
+            }
+
 
         }
     }
