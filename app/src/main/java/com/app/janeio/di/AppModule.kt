@@ -3,10 +3,9 @@ package com.app.janeio.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.app.janeio.database.NoteRepository
-import com.app.janeio.database.NotesDatabase
-import com.app.janeio.model.NoteDao
-import com.app.janeio.model.NoteDao_Impl
+import com.app.janeio.notes.data.NoteRepository
+import com.app.janeio.notes.data.NotesDatabase
+import com.app.janeio.notes.domain.NoteDao
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,7 +28,7 @@ object AppModule {
 
     @Provides
     @Singleton
-     fun getRepo(app:Application, noteDao: NoteDao):NoteRepository {
+     fun getRepo(app:Application, noteDao: NoteDao): NoteRepository {
          return NoteRepository(app, noteDao)
      }
 
@@ -41,7 +40,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun notesDao(db:NotesDatabase):NoteDao{
+    fun notesDao(db: NotesDatabase):NoteDao{
         return NoteDao_Impl(db)
     }
 

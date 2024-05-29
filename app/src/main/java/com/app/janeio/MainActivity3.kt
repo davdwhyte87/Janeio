@@ -41,7 +41,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.janeio.home.HomeScreen
 import com.app.janeio.notes.presentation.components.TopBar
-import com.app.janeio.screens.BottomBarScreen
 import com.app.janeio.ui.theme.AppTheme
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
