@@ -1,11 +1,12 @@
-package com.app.janeio.view_models
+package com.app.janeio.notes.domain
+
 
 
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.app.janeio.database.NoteRepository
+import com.app.janeio.notes.data.NoteRepository
 import com.app.janeio.database.NotesDatabase
 import com.app.janeio.model.Note
 import com.app.janeio.model.NoteDao
@@ -47,10 +48,10 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
         database = NotesDatabase.getInstance(application)
         noteDao = database.notesDao()
 
-       // noteRepository = NoteRepository(application)
+        // noteRepository = NoteRepository(application)
 
     }
-//    @OptIn(DelicateCoroutinesApi::class)
+    //    @OptIn(DelicateCoroutinesApi::class)
     fun add(item: Note){
         viewModelScope.launch{
             withContext(Dispatchers.IO){
@@ -72,7 +73,7 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     }
 
     fun changeSingleNote(note:Note){
-       _singleNote.value = note
+        _singleNote.value = note
     }
 
     fun saveSingleNote(){
@@ -104,7 +105,7 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     }
 
     fun updateMultiTempDeleteLIst(note:Note){
-       val list =  _tempMultiDeleteNotes.value
+        val list =  _tempMultiDeleteNotes.value
         val newList = list.toMutableList()
         newList.add(note)
         _tempMultiDeleteNotes.value = newList
@@ -137,7 +138,7 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
         //notesList.value?.remove(item)
     }
 
-//    @OptIn(DelicateCoroutinesApi::class)
+    //    @OptIn(DelicateCoroutinesApi::class)
     fun getAllNotes(){
         viewModelScope.launch {
             val temp = noteRepository.getAll().first()

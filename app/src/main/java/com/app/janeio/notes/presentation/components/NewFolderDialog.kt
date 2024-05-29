@@ -1,20 +1,16 @@
-package com.app.janeio.components
+package com.app.janeio.notes.presentation.components
+
+
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,15 +28,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
 import com.app.janeio.model.FileType
 import com.app.janeio.model.Note
-import com.app.janeio.ui.theme.LightPurple
 import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.ui.theme.LightPurple
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:com.app.janeio.view_models.NotesViewModel){
+fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:NotesViewModel){
     var folderName by rememberSaveable {
         mutableStateOf("")
     }
@@ -53,7 +49,7 @@ fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:com.app.janeio.vie
                 onDismissRequest = {
                     appViewModel.closeNewNotesDialog()
                     appViewModel.newFolderDialog(false)
-                                   },
+                },
                 properties = DialogProperties(
                     usePlatformDefaultWidth = false,
                     dismissOnClickOutside = true
@@ -115,4 +111,4 @@ fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:com.app.janeio.vie
         }
     }
 
-    }
+}

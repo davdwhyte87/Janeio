@@ -1,4 +1,4 @@
-package com.app.janeio.screens
+package com.app.janeio.notes.presentation
 
 import android.os.Build
 import android.util.Log

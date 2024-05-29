@@ -1,4 +1,4 @@
-package com.app.janeio.screens
+package com.app.janeio.notes.domain
 
 sealed class NavScreen(
     val route:String,
@@ -12,5 +12,10 @@ sealed class NavScreen(
     object SingleNoteScreen:NavScreen(
         route = "single_note",
         title = "Single Note"
+    )
+
+    object HomeScreen:NavScreen(
+        route = "home",
+        title = "Home"
     )
 }
