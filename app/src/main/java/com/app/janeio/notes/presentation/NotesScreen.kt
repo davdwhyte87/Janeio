@@ -63,8 +63,8 @@ import com.app.janeio.notes.presentation.components.SearchBar
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotesScreen(
-appViewModel: AppViewModel,
-notesViewModel: NotesViewModel,
+appViewModel: AppViewModel = hiltViewModel(),
+notesViewModel: NotesViewModel = hiltViewModel(),
 navController:NavHostController
 ){
 
@@ -75,7 +75,6 @@ navController:NavHostController
         ,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ){
-
 
         SearchBar()
         DeleteButton(appViewModel, notesViewModel)

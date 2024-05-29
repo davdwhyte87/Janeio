@@ -23,15 +23,25 @@ import com.app.janeio.view_models.NotesViewModel
 @Composable
 fun appNav(navController:NavHostController){
 
-    NavHost(navController = navController, startDestination =com.app.janeio.notes.domain.NavScreen.HomeScreen.route ) {
+    NavHost(navController = navController, startDestination =com.app.janeio.notes.domain.NavScreen.NotesScreen.route ) {
         composable(route=com.app.janeio.notes.domain.NavScreen.HomeScreen.route){
             HomeScreen(navController)
         }
-        composable(route=BottomBarScreen.Notes.route){
+//        composable(route=BottomBarScreen.Notes.route){
+//            com.app.janeio.notes.presentation.NotesScreen(
+//                navController = navController
+//            )
+//
+//        }
 
-
+        composable(route=com.app.janeio.notes.domain.NavScreen.NotesScreen.route){
+            com.app.janeio.notes.presentation.NotesScreen(navController=navController)
         }
-        composable(route=BottomBarScreen.Todo.route){
+//        composable(route=BottomBarScreen.Todo.route){
+//            TodoScreen()
+//        }
+
+        composable(route=com.app.janeio.notes.domain.NavScreen.TodoScreen.route){
             TodoScreen()
         }
 
@@ -49,3 +59,4 @@ fun appNav(navController:NavHostController){
     }
 
 }
+

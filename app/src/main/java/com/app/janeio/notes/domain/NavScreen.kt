@@ -18,4 +18,14 @@ sealed class NavScreen(
         route = "home",
         title = "Home"
     )
+
+    object NotesScreen:NavScreen(
+        route = "notes",
+        title = "Notes"
+    )
+    object TodoScreen:NavScreen(
+        route = "todo",
+        title = "Todo"
+    )
+
 }

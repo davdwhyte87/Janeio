@@ -6,18 +6,26 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.outlined.EditNote
 import androidx.compose.material.icons.outlined.FormatListNumbered
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +40,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.app.janeio.home.HomeScreen
+import com.app.janeio.notes.presentation.components.TopBar
 import com.app.janeio.screens.BottomBarScreen
 import com.app.janeio.ui.theme.AppTheme
 import com.app.janeio.ui.theme.Black2
@@ -47,7 +56,7 @@ class MainActivity3 : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-
+            val navController = rememberNavController()
             AppTheme {
                 Surface(
                     modifier = Modifier
@@ -55,8 +64,60 @@ class MainActivity3 : ComponentActivity() {
                     color = MaterialTheme.colorScheme.primary,
 
                     ) {
-                    val navController = rememberNavController()
-                    appNav(navController = navController)
+
+
+                    Scaffold(
+                        topBar = {
+                            TopBar()
+
+                        },
+                        modifier = Modifier
+                            .padding(all = 0.dp)
+                            .background(color = MaterialTheme.colorScheme.primary),
+                        bottomBar = {
+
+                            BottomAppBar(
+                                contentColor = MaterialTheme.colorScheme.primary,
+                                containerColor = MaterialTheme.colorScheme.primary ,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(all = 0.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.primary,
+
+                                        )
+
+                            ) {
+
+
+                                com.app.janeio.notes.presentation.components.BottomNav(navController)
+                            }
+                        },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        floatingActionButton = {
+                            com.app.janeio.notes.presentation.components.AddButton {
+                                Log.d("OPen Dialog XXXXXX", "")
+
+                            }
+                        },
+
+                        floatingActionButtonPosition = FabPosition.Center,
+                    ) { it ->
+
+
+                        Column(
+                            modifier = Modifier
+                                .padding(it)
+                                .padding(all = 15.dp)
+                            ,
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                        ) {
+
+                            appNav(navController = navController)
+
+                        }
+                    }
                 }
             }
         }
