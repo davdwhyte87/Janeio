@@ -15,21 +15,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.app.janeio.components.NotesDataTopBar
-import com.app.janeio.model.FileType
-import com.app.janeio.model.Note
+import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.FileType
+import com.app.janeio.notes.domain.Note
+import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.ui.theme.XWhite
-import com.app.janeio.view_models.AppViewModel
-import com.app.janeio.view_models.NotesViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewNoteScreen (appViewModel: AppViewModel,
-                   notesViewModel: NotesViewModel,
+fun NewNoteScreen (appViewModel: AppViewModel = hiltViewModel(),
+                   notesViewModel: NotesViewModel = hiltViewModel(),
                    navController:NavHostController
 ){
 

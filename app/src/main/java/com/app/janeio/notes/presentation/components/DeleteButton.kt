@@ -14,10 +14,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.app.janeio.notes.domain.AppViewModel
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.XWhite
-import com.app.janeio.view_models.AppViewModel
+
 
 @Composable
 fun DeleteButton(appViewModel: AppViewModel, notesViewModel: NotesViewModel){

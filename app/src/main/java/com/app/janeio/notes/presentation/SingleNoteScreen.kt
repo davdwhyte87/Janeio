@@ -16,11 +16,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.app.janeio.model.FileType
-import com.app.janeio.model.Note
+import com.app.janeio.notes.domain.Note
+import com.app.janeio.notes.domain.NotesViewModel
+
 import com.app.janeio.ui.theme.XWhite
-import com.app.janeio.view_models.NotesViewModel
+
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,8 +30,13 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel){
+fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel = hiltViewModel()){
 
+    // update ui state
+    notesViewModel.updateButtomNavUIState(false)
+    notesViewModel.updateTopBarUIState(false)
+
+    //
     val singleNote = notesViewModel.singleNote.collectAsState()
     //val currentNoteState = singleNote
     var title by rememberSaveable { mutableStateOf("Hello") }

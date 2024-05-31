@@ -10,21 +10,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.app.janeio.screens.BottomBarScreen
-import com.app.janeio.screens.NavScreen
-import com.app.janeio.screens.NewNoteScreen
-import com.app.janeio.screens.NotesScreen
-import com.app.janeio.screens.SingleNoteScreen
-import com.app.janeio.screens.TodoScreen
-import com.app.janeio.view_models.AppViewModel
-import com.app.janeio.view_models.NotesViewModel
+import com.app.janeio.notes.domain.NavScreen
+import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.presentation.NotesScreen
+import com.app.janeio.notes.presentation.SingleNoteScreen
+import com.app.janeio.todo.presentation.TodoScreen
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun appNav(navController:NavHostController){
+fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
 
     NavHost(navController = navController, startDestination =com.app.janeio.notes.domain.NavScreen.NotesScreen.route ) {
-        composable(route=com.app.janeio.notes.domain.NavScreen.HomeScreen.route){
+        composable(route=NavScreen.HomeScreen.route){
+
             HomeScreen(navController)
         }
 //        composable(route=BottomBarScreen.Notes.route){
@@ -34,27 +33,33 @@ fun appNav(navController:NavHostController){
 //
 //        }
 
-        composable(route=com.app.janeio.notes.domain.NavScreen.NotesScreen.route){
-            com.app.janeio.notes.presentation.NotesScreen(navController=navController)
+        composable(route=NavScreen.NotesScreen.route){
+            notesViewModel.resetToHomeUI()
+            NotesScreen(navController=navController, notesViewModel = notesViewModel)
         }
 //        composable(route=BottomBarScreen.Todo.route){
 //            TodoScreen()
 //        }
 
-        composable(route=com.app.janeio.notes.domain.NavScreen.TodoScreen.route){
+        composable(route=NavScreen.TodoScreen.route){
             TodoScreen()
         }
 
-        composable(route=NavScreen.NewNoteScreen.route){
+//        composable(route=NavScreen.NewNoteScreen.route){
+//
+//        }
 
-        }
-
-        composable(route=NavScreen.SingleNoteScreen.route+"/{id}"){navBackStack->
+        composable(route= NavScreen.SingleNoteScreen.route+"/{id}"){ navBackStack->
 //            backNavMode1(appViewModel)
+            notesViewModel.updateNewNoteDialogUIState(false)
+            notesViewModel.updateTopBarUIState(false)
+            notesViewModel.updateButtomNavUIState(false)
+            notesViewModel.updateShowFloatButton(false)
+            notesViewModel.updateShowBackTopBar(true)
             val noteId = navBackStack.arguments?.getString("id")
-//            if (noteId !=null) {
-//                SingleNoteScreen(noteId, notesViewModel)
-//            }
+            if (noteId !=null) {
+                SingleNoteScreen(noteId)
+            }
         }
     }
 

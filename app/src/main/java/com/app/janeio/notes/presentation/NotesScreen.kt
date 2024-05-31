@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,28 +45,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.FileType
 
-import com.app.janeio.model.FileType
-import com.app.janeio.model.Note
+
 import com.app.janeio.notes.domain.NavScreen
+import com.app.janeio.notes.domain.Note
+import com.app.janeio.notes.domain.NotesUIEvent
 
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.XWhite
-import com.app.janeio.view_models.AppViewModel
+
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.presentation.components.NewFolderDialog
 import com.app.janeio.notes.presentation.components.NotesDialog
 import com.app.janeio.notes.presentation.components.NotesNFoldersList
 import com.app.janeio.notes.presentation.components.SearchBar
+import kotlinx.coroutines.flow.collectLatest
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotesScreen(
-appViewModel: AppViewModel = hiltViewModel(),
-notesViewModel: NotesViewModel = hiltViewModel(),
-navController:NavHostController
+    appViewModel: AppViewModel = hiltViewModel(),
+    notesViewModel: NotesViewModel,
+    navController:NavHostController
 ){
 
 
@@ -79,7 +84,7 @@ navController:NavHostController
         SearchBar()
         DeleteButton(appViewModel, notesViewModel)
         NotesNFoldersList(appViewModel, navController)
-        NotesDialog(appViewModel, navController)
+        NotesDialog(uiState = notesViewModel.uiState.collectAsState().value, navController=navController, notesViewModel = notesViewModel)
         NewFolderDialog(appViewModel, notesViewModel)
     }
 }
@@ -250,7 +255,7 @@ fun notesNFoldersList(appViewModel: AppViewModel, navController: NavHostControll
 
 @Composable
 fun NoteItemView(data: Note, modifier: Modifier,
-                 appViewModel: AppViewModel,
+                 appViewModel: AppViewModel ,
                  notesViewModel: NotesViewModel
 ){
 

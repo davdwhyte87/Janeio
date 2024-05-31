@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.app.janeio.notes.data.NoteRepository
 import com.app.janeio.notes.data.NotesDatabase
 import com.app.janeio.notes.domain.NoteDao
+import com.app.janeio.notes.domain.NoteDao_Impl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

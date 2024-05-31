@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.Alignment
-import com.app.janeio.view_models.AppViewModel
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
-import com.app.janeio.model.FileType
-import com.app.janeio.model.Note
+import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.FileType
+import com.app.janeio.notes.domain.Note
+
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.ui.theme.LightPurple
 import java.time.LocalDateTime
@@ -36,7 +38,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewFolderDialog(appViewModel:AppViewModel, notesViewModel:NotesViewModel){
+fun NewFolderDialog(appViewModel: AppViewModel, notesViewModel:NotesViewModel){
     var folderName by rememberSaveable {
         mutableStateOf("")
     }

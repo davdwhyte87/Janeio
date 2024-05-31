@@ -52,32 +52,35 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.app.janeio.screens.NavScreen
+import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.NavScreen
+import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.domain.UIState
+
 import com.app.janeio.ui.theme.Black1
 import com.app.janeio.ui.theme.LightGreen
 import com.app.janeio.ui.theme.LightOrange
-import com.app.janeio.view_models.AppViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 
 
 
 @Composable
-fun NotesDialog(appViewModel:AppViewModel, navController: NavHostController){
-    // val openAlertDialog = remember { mutableStateOf(false)
-//    val appViewModel = hiltViewModel<AppViewModel>()
-//    val navController = rememberNavController()
-    Log.d("APPVIEW M XXXXXXXX", appViewModel.isNewNotesDialogOpen.collectAsState().value.toString())
-    //appViewModel.openNewNotesDialog()
-    val isOpen  by appViewModel.isNewNotesDialogOpen.collectAsStateWithLifecycle()
-    LaunchedEffect(isOpen) {
-        Log.d("TRIGGered XXXXXXXX", "yes")
+fun NotesDialog(notesViewModel: NotesViewModel,
+        navController: NavHostController,
+                uiState: UIState
+){
+
+//    val uiState  = notesViewModel.uiState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(uiState) {
+        Log.d("STATE CHANGED XXXXXXX", "")
     }
 
     when {
-        isOpen->{
+        uiState.isNewNoteDialogOpen->{
             Dialog(
-                onDismissRequest = {appViewModel.closeNewNotesDialog()},
+                onDismissRequest = {notesViewModel.updateNewNoteDialogUIState(false)},
                 properties = DialogProperties(
                     usePlatformDefaultWidth = false,
                     dismissOnClickOutside = true
@@ -153,8 +156,8 @@ fun NotesDialog(appViewModel:AppViewModel, navController: NavHostController){
                                     interactionSource = remember { MutableInteractionSource() },
                                     indication = rememberRipple(color = Black1),
                                     onClick = {
-                                        appViewModel.newFolderDialog(true)
-                                        appViewModel.closeNewNotesDialog()
+                                        //appViewModel.newFolderDialog(true)
+                                        notesViewModel.updateNewNoteDialogUIState(false)
                                     }
                                 )
                             ){

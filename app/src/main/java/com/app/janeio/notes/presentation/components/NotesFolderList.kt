@@ -12,11 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.app.janeio.model.FileType
+import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.FileType
+
 import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.presentation.NoteItemView
-import com.app.janeio.view_models.AppViewModel
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

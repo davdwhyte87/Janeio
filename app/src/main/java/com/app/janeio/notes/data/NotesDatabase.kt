@@ -6,7 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.app.janeio.model.*
+import com.app.janeio.notes.domain.Folder
+import com.app.janeio.notes.domain.FolderDao
+
+import com.app.janeio.notes.domain.Note
+import com.app.janeio.notes.domain.NoteDao
 
 
 @Database(entities = [Note::class, Folder::class], version = 6, exportSchema = false)
@@ -14,7 +18,7 @@ import com.app.janeio.model.*
 abstract class NotesDatabase :RoomDatabase(){
 
     abstract fun notesDao(): NoteDao
-    abstract fun folderDao():FolderDao
+    abstract fun folderDao(): FolderDao
 
     companion object{
         private var instance: NotesDatabase?=null

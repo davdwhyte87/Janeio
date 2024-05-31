@@ -7,25 +7,26 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.app.janeio.notes.data.NoteRepository
-import com.app.janeio.database.NotesDatabase
-import com.app.janeio.model.Note
-import com.app.janeio.model.NoteDao
-import com.app.janeio.model.TodoItem
+import com.app.janeio.notes.data.NotesDatabase
+
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+
+
 
 
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(application: Application, val noteRepository: NoteRepository) :AndroidViewModel(application) {
     private var noteDao:NoteDao
-    private var database:NotesDatabase
+    private var database: NotesDatabase
     //private val noteRepository: NoteRepository
     val defNote = Note(null,"","","","","",null)
     var defNotesList:List<Note> = (listOf(defNote))
@@ -38,12 +39,21 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     private val _tempMultiDeleteNotes = MutableStateFlow(listOf(defNote))
     val tempMultiDeleteNotes = _tempMultiDeleteNotes.asStateFlow()
 
+
+    private val _uiState = MutableStateFlow(UIState())
+    val uiState = _uiState.asStateFlow()
+
 //    var newList :MutableList<Note>
 
     private val _singleNote= MutableStateFlow(defNote)
     val singleNote = _singleNote.asStateFlow()
     private val _folderFiles = MutableStateFlow(defNotesList)
     val folderFiles = _folderFiles.asStateFlow()
+
+
+    private val _eventFlow = MutableSharedFlow<NotesUIEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     init {
         database = NotesDatabase.getInstance(application)
         noteDao = database.notesDao()
@@ -176,5 +186,58 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     }
 
 
+    fun updateTopBarUIState(data:Boolean){
+        _uiState.update {
+            it.copy(isMainTopBarVisible = data)
+        }
+    }
+
+    fun updateButtomNavUIState(data:Boolean){
+        _uiState.update {
+            it.copy(isBottomNavVisible = data)
+        }
+    }
+    fun updateNewNoteDialogUIState(data:Boolean){
+        _uiState.update {
+            it.copy(isNewNoteDialogOpen = data)
+        }
+    }
+
+    fun updateShowFloatButton(data:Boolean){
+        _uiState.update {
+            it.copy(showFloatButton = data)
+        }
+    }
+    fun updateShowBackTopBar(data:Boolean){
+        _uiState.update {
+            it.copy(showBackTopBar = data)
+        }
+    }
+
+    fun resetToHomeUI(){
+        _uiState.value= UIState()
+    }
+
+     fun onEvents(event:NotesUIEvent){
+        when(event){
+            is NotesUIEvent.showNewNoteDialog->{
+
+                viewModelScope.launch {
+                    _eventFlow.emit(NotesUIEvent.showNewNoteDialog)
+                }
+
+
+            }
+            is NotesUIEvent.hideNewNoteDialog->{
+
+            }
+        }
+    }
+
 }
 
+
+sealed class  NotesUIEvent{
+    object showNewNoteDialog:NotesUIEvent()
+    object hideNewNoteDialog:NotesUIEvent()
+}

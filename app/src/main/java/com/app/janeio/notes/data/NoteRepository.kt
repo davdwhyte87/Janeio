@@ -2,14 +2,13 @@ package com.app.janeio.notes.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.app.janeio.model.Note
-import com.app.janeio.model.NoteDao
-import com.app.janeio.model.NoteDao_Impl
+import com.app.janeio.notes.domain.Note
+import com.app.janeio.notes.domain.NoteDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
-class NoteRepository @Inject constructor(val appx: Application, val noteDao:NoteDao) {
+class NoteRepository @Inject constructor(val appx: Application, val noteDao: NoteDao) {
 
 
     val database= NotesDatabase.getInstance(appx)

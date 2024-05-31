@@ -22,8 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.app.janeio.BottomNavigationItem
-import com.app.janeio.screens.BottomBarScreen
+
+import com.app.janeio.notes.domain.BottomBarScreen
+import com.app.janeio.notes.domain.BottomNavigationItem
+
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.XWhite
