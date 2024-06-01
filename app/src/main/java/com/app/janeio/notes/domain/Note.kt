@@ -50,4 +50,7 @@ interface NoteDao {
 
     @Query("select * from note_table where FolderID=:id")
     fun getFolderFiles(id:Int):Flow<List<Note>>
+
+    @Query("SELECT * FROM note_table WHERE FolderID=:folderId")
+    fun getFolderNotes(folderId:Int):Flow<List<Note>>
 }

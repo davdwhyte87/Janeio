@@ -54,6 +54,9 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     private val _eventFlow = MutableSharedFlow<NotesUIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
+    private val _singleFolderNotesList = MutableStateFlow(defNotesList)
+    var singleFolderNotesList = _singleFolderNotesList.asStateFlow()
+
     init {
         database = NotesDatabase.getInstance(application)
         noteDao = database.notesDao()
@@ -78,6 +81,15 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
             withContext(Dispatchers.IO){
                 noteRepository.insert(_tempNote.value)
                 resetTempNote()
+            }
+        }
+    }
+
+    fun getFolderNotes(id:Int){
+        viewModelScope.launch{
+            withContext(Dispatchers.IO){
+                val temp = noteRepository.getFolderNotes(id).first()
+                _singleFolderNotesList.value = temp
             }
         }
     }
@@ -153,21 +165,8 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
         viewModelScope.launch {
             val temp = noteRepository.getAll().first()
             // hide notes that have association with a folder
-            val newNoteList = ArrayList<Note>()
-            temp.forEach {
-                if(it.FolderID ==null){
-                    newNoteList.add(it)
-                }
-            }
-            _notelist.value = newNoteList
-//            if (tempList != null) {
-//                tempList.forEach {
-//                    if (it.FolderID != null){
-//                        tempList.remove(it)
-//                    }
-//                }
-//            }
-//            notesList.value = noteRepository.getAll()
+            _notelist.value = temp
+
         }
 
     }

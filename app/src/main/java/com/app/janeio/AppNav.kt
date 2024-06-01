@@ -14,6 +14,7 @@ import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.presentation.NewNoteScreen
 import com.app.janeio.notes.presentation.NotesScreen
+import com.app.janeio.notes.presentation.SingleFolderScreen
 import com.app.janeio.notes.presentation.SingleNoteScreen
 import com.app.janeio.todo.presentation.TodoScreen
 
@@ -41,6 +42,15 @@ fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
         composable(route=NavScreen.NewNoteScreen.route){
             notesViewModel.newNoteScreenUIState()
            NewNoteScreen(navController = navController, notesViewModel = notesViewModel)
+        }
+
+        composable(route=NavScreen.SingleFolderScreen.route+"/{id}"){navBackStack->
+            notesViewModel.newNoteScreenUIState()
+            val noteId = navBackStack.arguments?.getString("id")
+            if (noteId !=null){
+                SingleFolderScreen(navController = navController, notesViewModel = notesViewModel, id = noteId )
+            }
+
         }
 
         composable(route= NavScreen.SingleNoteScreen.route+"/{id}"){ navBackStack->

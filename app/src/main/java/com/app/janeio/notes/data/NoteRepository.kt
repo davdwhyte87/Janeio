@@ -2,6 +2,7 @@ package com.app.janeio.notes.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.app.janeio.notes.domain.Note
 import com.app.janeio.notes.domain.NoteDao
 import kotlinx.coroutines.flow.Flow
@@ -18,6 +19,12 @@ class NoteRepository @Inject constructor(val appx: Application, val noteDao: Not
 //        allNotes = noteDao.getAllNotes()
           allNotes= noteDao.getAllNotes()
 
+    }
+
+
+
+    fun getFolderNotes(folderId:Int):Flow<List<Note>> {
+        return noteDao.getFolderNotes(folderId)
     }
 
     suspend fun insert(note:Note){

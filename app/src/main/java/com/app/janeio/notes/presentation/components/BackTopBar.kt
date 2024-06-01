@@ -69,6 +69,10 @@ fun BackTopBar(navController: NavHostController,
                             notesViewModel.saveSingleNote()
                             navController.popBackStack()
                         }
+                        NavScreen.SingleFolderScreen.route+"/{id}"->{
+
+                            navController.popBackStack()
+                        }
                     }
 
                 }) {

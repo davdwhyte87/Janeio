@@ -67,8 +67,9 @@ fun NotesNFoldersList( navController: NavHostController,
                             navController.navigate(NavScreen.SingleNoteScreen.route+"/${item.id}")
                         }
                         // navigate to single folder screen
-                        if (item.Type == FileType.FILE.name){
-
+                        if (item.Type == FileType.FOLDER.name){
+                            Log.d("Folder ID XXXXXX", item.id.toString())
+                            navController.navigate(NavScreen.SingleFolderScreen.route+"/${item.id}")
                         }
                     },
                     onLongClick = {

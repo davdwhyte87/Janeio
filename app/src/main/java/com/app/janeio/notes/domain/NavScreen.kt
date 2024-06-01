@@ -14,6 +14,11 @@ sealed class NavScreen(
         title = "Single Note"
     )
 
+    object SingleFolderScreen:NavScreen(
+        route = "single_folder",
+        title = "Single Folder"
+    )
+
     object HomeScreen:NavScreen(
         route = "home",
         title = "Home"
