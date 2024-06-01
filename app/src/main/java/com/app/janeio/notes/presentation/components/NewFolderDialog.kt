@@ -31,6 +31,7 @@ import com.app.janeio.notes.domain.FileType
 import com.app.janeio.notes.domain.Note
 
 import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.domain.UIState
 import com.app.janeio.ui.theme.LightPurple
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -38,19 +39,17 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewFolderDialog(appViewModel: AppViewModel, notesViewModel:NotesViewModel){
+fun NewFolderDialog(uiState: UIState, notesViewModel:NotesViewModel){
     var folderName by rememberSaveable {
         mutableStateOf("")
     }
 
-    val newFolderDialogOpen = appViewModel.isNewFolderDialogOpen.collectAsState().value
 
     when {
-        newFolderDialogOpen ->{
+        uiState.showNewFolderDialog ->{
             Dialog(
                 onDismissRequest = {
-                    appViewModel.closeNewNotesDialog()
-                    appViewModel.newFolderDialog(false)
+                                   notesViewModel.updateShowNewFolderDialogState(false)
                 },
                 properties = DialogProperties(
                     usePlatformDefaultWidth = false,
@@ -85,7 +84,7 @@ fun NewFolderDialog(appViewModel: AppViewModel, notesViewModel:NotesViewModel){
                                 val formatted = current.format(formatter)
 
                                 // new folder note
-                                var note = Note(
+                                val note = Note(
                                     Title = folderName,
                                     Note = "",
                                     Type =   FileType.FOLDER.toString(),
@@ -95,7 +94,7 @@ fun NewFolderDialog(appViewModel: AppViewModel, notesViewModel:NotesViewModel){
                                     id = null
                                 )
                                 notesViewModel.add(note)
-                                appViewModel.newFolderDialog(false)
+                                notesViewModel.updateShowNewFolderDialogState(false)
                             },
                             shape = RectangleShape,
                             modifier = Modifier.align(Alignment.End),

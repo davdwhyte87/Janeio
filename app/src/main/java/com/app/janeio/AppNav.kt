@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.presentation.NewNoteScreen
 import com.app.janeio.notes.presentation.NotesScreen
 import com.app.janeio.notes.presentation.SingleNoteScreen
 import com.app.janeio.todo.presentation.TodoScreen
@@ -26,28 +27,21 @@ fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
 
             HomeScreen(navController)
         }
-//        composable(route=BottomBarScreen.Notes.route){
-//            com.app.janeio.notes.presentation.NotesScreen(
-//                navController = navController
-//            )
-//
-//        }
+
 
         composable(route=NavScreen.NotesScreen.route){
-            notesViewModel.resetToHomeUI()
-            NotesScreen(navController=navController, notesViewModel = notesViewModel)
+            notesViewModel.homeScreenUIState()
+            NotesScreen(notesViewModel,navController)
         }
-//        composable(route=BottomBarScreen.Todo.route){
-//            TodoScreen()
-//        }
 
         composable(route=NavScreen.TodoScreen.route){
             TodoScreen()
         }
-
-//        composable(route=NavScreen.NewNoteScreen.route){
-//
-//        }
+        
+        composable(route=NavScreen.NewNoteScreen.route){
+            notesViewModel.newNoteScreenUIState()
+           NewNoteScreen(navController = navController, notesViewModel = notesViewModel)
+        }
 
         composable(route= NavScreen.SingleNoteScreen.route+"/{id}"){ navBackStack->
 //            backNavMode1(appViewModel)
@@ -58,7 +52,7 @@ fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
             notesViewModel.updateShowBackTopBar(true)
             val noteId = navBackStack.arguments?.getString("id")
             if (noteId !=null) {
-                SingleNoteScreen(noteId)
+                SingleNoteScreen(noteId, notesViewModel)
             }
         }
     }

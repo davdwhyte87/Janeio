@@ -5,6 +5,8 @@ data class UIState(
     val isBottomNavVisible:Boolean = true,
     val isNewNoteDialogOpen:Boolean = false,
     val showFloatButton:Boolean = true,
-    val showBackTopBar:Boolean = false
+    val showBackTopBar:Boolean = false,
+    val showNotListCheckBox:Boolean = false,
+    val showNewFolderDialog:Boolean = false
 
 )

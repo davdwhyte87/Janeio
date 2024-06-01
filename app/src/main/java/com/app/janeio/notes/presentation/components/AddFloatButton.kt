@@ -21,7 +21,7 @@ import com.app.janeio.ui.theme.XWhite
 
 
 @Composable
-fun AddButton(uiState: UIState, viewModel: NotesViewModel) {
+fun AddButton(viewModel: NotesViewModel) {
 
 //    val d = notesViewModel.uiState.collectAsState().value.toString()
     FloatingActionButton(

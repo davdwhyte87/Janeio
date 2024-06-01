@@ -28,8 +28,7 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewNoteScreen (appViewModel: AppViewModel = hiltViewModel(),
-                   notesViewModel: NotesViewModel = hiltViewModel(),
+fun NewNoteScreen (notesViewModel: NotesViewModel,
                    navController:NavHostController
 ){
 

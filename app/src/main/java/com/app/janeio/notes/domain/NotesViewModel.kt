@@ -213,9 +213,36 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
             it.copy(showBackTopBar = data)
         }
     }
+    fun updateShowNoteListCheckBox(data:Boolean){
+        _uiState.update {
+            it.copy(showNotListCheckBox = data)
+        }
+    }
 
-    fun resetToHomeUI(){
-        _uiState.value= UIState()
+    fun homeScreenUIState(){
+        _uiState.update {
+            it.copy(showBackTopBar = false,
+                showFloatButton = true,
+                isBottomNavVisible = true,
+                isMainTopBarVisible = true,
+                showNotListCheckBox = false
+            )
+        }
+    }
+
+    fun newNoteScreenUIState(){
+        _uiState.update {
+            it.copy(showBackTopBar = true,
+                showFloatButton = false,
+                isBottomNavVisible = false,
+                isMainTopBarVisible = false,
+                showNotListCheckBox = false
+            )
+        }
+    }
+
+    fun updateShowNewFolderDialogState(data:Boolean){
+        _uiState.update { it.copy(showNewFolderDialog = data) }
     }
 
      fun onEvents(event:NotesUIEvent){

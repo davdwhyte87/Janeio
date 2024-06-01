@@ -58,6 +58,8 @@ import com.app.janeio.ui.theme.LightGrey
 import com.app.janeio.ui.theme.XWhite
 
 import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.domain.UIState
+import com.app.janeio.notes.presentation.components.DeleteButton
 import com.app.janeio.notes.presentation.components.NewFolderDialog
 import com.app.janeio.notes.presentation.components.NotesDialog
 import com.app.janeio.notes.presentation.components.NotesNFoldersList
@@ -68,10 +70,10 @@ import kotlinx.coroutines.flow.collectLatest
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NotesScreen(
-    appViewModel: AppViewModel = hiltViewModel(),
     notesViewModel: NotesViewModel,
-    navController:NavHostController
+    navController:NavHostController,
 ){
+    val uiState: UIState = notesViewModel.uiState.collectAsState().value
 
 
     Column(
@@ -82,43 +84,17 @@ fun NotesScreen(
     ){
 
         SearchBar()
-        DeleteButton(appViewModel, notesViewModel)
-        NotesNFoldersList(appViewModel, navController)
+        DeleteButton(uiState, notesViewModel)
+        NotesNFoldersList(navController, notesViewModel, uiState)
         NotesDialog(uiState = notesViewModel.uiState.collectAsState().value, navController=navController, notesViewModel = notesViewModel)
-        NewFolderDialog(appViewModel, notesViewModel)
+        NewFolderDialog(uiState = notesViewModel.uiState.collectAsState().value,
+            notesViewModel)
     }
 }
 
 
 
-@Composable
-fun DeleteButton(appViewModel: AppViewModel, notesViewModel: NotesViewModel){
-    val isListCheckBox = appViewModel.isNotesListCheckBox.collectAsState().value
-    Column (modifier = Modifier.fillMaxWidth()){
 
-        if(isListCheckBox){
-            IconButton(
-                onClick = {
-                    Log.d("Delete Button clicked", "clicked")
-                    notesViewModel.multiDelete()
-                    appViewModel.notesListCheckBox(false)
-                },
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .background(color = Black2)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    modifier = Modifier.size(24.dp),
-                    contentDescription ="",
-                    tint = XWhite
-                )
-            }
-        }
-
-    }
-
-}
 
 @Composable
 fun searchBar(){
@@ -158,166 +134,3 @@ fun searchBar(){
     )
 }
 
-data class NoteItem(
-    val title:String,
-    val summary:String,
-    val type: Int
-)
-
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun notesNFoldersList(appViewModel: AppViewModel, navController: NavHostController){
-    val notesViewModel = hiltViewModel<NotesViewModel>()
-    notesViewModel.getAllNotes()
-
-    //val notes = notesViewModel.notesList.collectAsState()
-    val notes = notesViewModel.notesList.collectAsState()
-    Log.d("NOTES COMP *******", notes.toString())
-
-//    val filesNFolders = listOf()
-    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(notes.value){item->
-            NoteItemView(data = item,
-                modifier = Modifier.combinedClickable (
-                    onClick = {
-                        Log.d("FType XXXX", item.Type)
-                              // navigate to a single note view
-                              if(item.Type == FileType.FILE.name){
-
-                                  navController.navigate(NavScreen.SingleNoteScreen.route+"/${item.id}")
-                              }
-                        // navigate to single folder screen
-                        if (item.Type == FileType.FILE.name){
-
-                        }
-                    },
-                    onLongClick = {
-                        Log.d("Long Press XXXX", "pressed")
-                        appViewModel.notesListCheckBox(true)
-                    }
-                ), appViewModel, notesViewModel
-            )
-        }
-    }
-}
-
-
-//@OptIn(ExperimentalFoundationApi::class)
-//@Preview
-//@Composable
-//fun notesNFoldersListPrev(){
-//
-//    //val notesViewModel = hiltViewModel<NotesViewModel>()
-//    //notesViewModel.getAllNotes()
-//
-//    //val notes = notesViewModel.notesList.collectAsState()
-//
-//
-//
-//    val filesNFolders = listOf(
-//        Note(
-//            id = null,
-//            CreatedAt = "",
-//            FolderID = 0,
-//            Note = "Notes sameple data",
-//            Title = "This is dope",
-//            UpdatedAt = "3:44pm",
-//            Type = "fold"
-//        ),
-//        Note(
-//            id = null,
-//            CreatedAt = "",
-//            FolderID = 0,
-//            Note = "Notes sameple data",
-//            Title = "This is dope",
-//            UpdatedAt = "3:44pm",
-//            Type = "fold"
-//        )
-//    )
-//    LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
-//        items(filesNFolders){item->
-//            NoteItemView(data = item,
-//                modifier = Modifier.combinedClickable (
-//                    onClick = {},
-//                    onLongClick = {
-//                        Log.d("Long Press XXXX", "pressed")
-//
-//                    }
-//                ),
-//                app
-//            )
-//        }
-//    }
-//}
-
-
-
-@Composable
-fun NoteItemView(data: Note, modifier: Modifier,
-                 appViewModel: AppViewModel ,
-                 notesViewModel: NotesViewModel
-){
-
-    Box (modifier = Modifier
-        .fillMaxWidth()
-        .background(Black2)
-        .padding(10.dp)
-
-    ) {
-        Column (modifier = modifier ) {
-
-
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                var isChecked by rememberSaveable {
-                    mutableStateOf(false)
-                }
-
-                Text(text = data.Title, fontSize = 16.sp, color = XWhite)
-                val isListCheckBox = appViewModel.isNotesListCheckBox.collectAsState().value
-                if (isListCheckBox){
-                    Checkbox(
-                        modifier = Modifier,
-                        checked = isChecked,
-                        onCheckedChange = {
-                            if (isChecked) {
-                                isChecked = false
-                                notesViewModel.removeFromMultiTempDeleteList(data)
-                            }else{
-                                isChecked = true
-                                notesViewModel.updateMultiTempDeleteLIst(data)
-                            }
-
-                                          },
-                        colors = CheckboxDefaults.colors(
-                            uncheckedColor = XWhite,
-
-                            )
-                    )
-                }
-
-            }
-
-            Text(
-                text = data.Note,
-                fontSize = 10.sp,
-                color = LightGrey,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            if (data.Type == FileType.FOLDER.name){
-                Icon(
-                    imageVector = Icons.Outlined.Folder,
-                    contentDescription = "" ,
-                    tint = XWhite
-                )
-            }
-
-
-        }
-    }
-
-}

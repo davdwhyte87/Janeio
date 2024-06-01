@@ -1,6 +1,7 @@
 package com.app.janeio.notes.presentation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,23 +31,22 @@ import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel = hiltViewModel()){
-
-    // update ui state
-    notesViewModel.updateButtomNavUIState(false)
-    notesViewModel.updateTopBarUIState(false)
+fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel){
 
     //
     val singleNote = notesViewModel.singleNote.collectAsState()
     //val currentNoteState = singleNote
-    var title by rememberSaveable { mutableStateOf("Hello") }
+//    var title by rememberSaveable { mutableStateOf("Hello") }
     var time by rememberSaveable {
         mutableStateOf("")
     }
 //    var noteData by rememberSaveable {
 //        mutableStateOf("")
 //    }
-    var noteData =singleNote.value.Note
+    val noteData =singleNote.value.Note
+    val title = singleNote.value.Title
+
+    Log.d("ID SINGLE NOTE XX", singleNote.value.id.toString())
     //notesViewModel.getSingle(id.toInt())
 
 
@@ -71,9 +71,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel = hiltViewModel()
             value =title ,
             placeholder = { Text(text = "Title") },
             onValueChange = {
-                            title = it
-//                title = it
-                var note = Note(
+                val note = Note(
                     Title = it,
                     Note = singleNote.value.Note,
                     Type =   singleNote.value.Type,
@@ -101,7 +99,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel = hiltViewModel()
             modifier = Modifier.fillMaxWidth(),
             onValueChange = {
 
-                var note = Note(
+                val note = Note(
                     Title = singleNote.value.Title,
                     Note = it,
                     Type =   singleNote.value.Type,

@@ -130,7 +130,7 @@ class MainActivity3 : ComponentActivity() {
                         contentColor = MaterialTheme.colorScheme.tertiary,
                         floatingActionButton = {
                             if (uiState.showFloatButton){
-                                AddButton(notesViewModel.uiState.collectAsState().value,
+                                AddButton(
                                     viewModel = notesViewModel)
                             }
 

@@ -120,6 +120,7 @@ fun NotesDialog(notesViewModel: NotesViewModel,
                                     indication = rememberRipple(color = Black1),
                                     onClick = {
                                         navController.navigate(NavScreen.NewNoteScreen.route)
+                                        notesViewModel.updateNewNoteDialogUIState(false)
                                     }
                                 )
                             ){
@@ -158,6 +159,8 @@ fun NotesDialog(notesViewModel: NotesViewModel,
                                     onClick = {
                                         //appViewModel.newFolderDialog(true)
                                         notesViewModel.updateNewNoteDialogUIState(false)
+                                        notesViewModel.updateShowNewFolderDialogState(true)
+
                                     }
                                 )
                             ){

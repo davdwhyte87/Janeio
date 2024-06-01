@@ -16,13 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.app.janeio.notes.domain.AppViewModel
 import com.app.janeio.notes.domain.NotesViewModel
+import com.app.janeio.notes.domain.UIState
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.XWhite
 
 
 @Composable
-fun DeleteButton(appViewModel: AppViewModel, notesViewModel: NotesViewModel){
-    val isListCheckBox = appViewModel.isNotesListCheckBox.collectAsState().value
+fun DeleteButton(uiState: UIState,
+                 notesViewModel: NotesViewModel){
+    val isListCheckBox = uiState.showNotListCheckBox
     Column (modifier = Modifier.fillMaxWidth()){
 
         if(isListCheckBox){
@@ -30,7 +32,7 @@ fun DeleteButton(appViewModel: AppViewModel, notesViewModel: NotesViewModel){
                 onClick = {
                     Log.d("Delete Button clicked", "clicked")
                     notesViewModel.multiDelete()
-                    appViewModel.notesListCheckBox(false)
+                    notesViewModel.updateShowNoteListCheckBox(false)
                 },
                 modifier = Modifier
                     .align(Alignment.End)
