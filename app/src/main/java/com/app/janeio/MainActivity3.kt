@@ -143,10 +143,11 @@ class MainActivity3 : ComponentActivity() {
                         Column(
                             modifier = Modifier
                                 .padding(it)
-                                .padding(all = 15.dp)
+                                .padding(all = 8.dp)
                             ,
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                         ) {
+
 
                             appNav(navController = navController, notesViewModel)
 

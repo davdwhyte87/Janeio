@@ -36,7 +36,7 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
     private val _tempNote = MutableStateFlow(defNote)
     val tempNote = _tempNote.asStateFlow()
 
-    private val _tempMultiDeleteNotes = MutableStateFlow(listOf(defNote))
+    private val _tempMultiDeleteNotes = MutableStateFlow(listOf<Note>())
     val tempMultiDeleteNotes = _tempMultiDeleteNotes.asStateFlow()
 
 
@@ -62,7 +62,6 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
         noteDao = database.notesDao()
 
         // noteRepository = NoteRepository(application)
-
     }
     //    @OptIn(DelicateCoroutinesApi::class)
     fun add(item: Note){
@@ -114,16 +113,34 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
 
 
     fun multiDelete(){
-        viewModelScope.launch{
-            withContext(Dispatchers.IO){
-                val notes = _tempMultiDeleteNotes.value
-                notes.forEach {
+//        viewModelScope.launch{
+//            withContext(Dispatchers.IO){
+//                val notes = _tempMultiDeleteNotes.value
+//                notes.forEach {
+//                    noteRepository.delete(it)
+//                }
+//                _tempMultiDeleteNotes.value = listOf()
+//            }
+//        }
+
+        val notes = _tempMultiDeleteNotes.value
+
+        notes.forEach {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
                     noteRepository.delete(it)
                 }
-                _tempMultiDeleteNotes.value = listOf()
             }
         }
 
+    }
+
+    fun deleteNote(note: Note){
+        viewModelScope.launch{
+            withContext(Dispatchers.IO){
+                noteRepository.delete(note)
+            }
+        }
     }
 
     fun updateMultiTempDeleteLIst(note:Note){
@@ -133,11 +150,36 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
         _tempMultiDeleteNotes.value = newList
         Log.d("Update List", _tempMultiDeleteNotes.value.toString())
     }
+    fun clearMultiTempDeleteList(){
+        _tempMultiDeleteNotes.value = listOf()
+    }
     fun removeFromMultiTempDeleteList(note:Note){
         val list =  _tempMultiDeleteNotes.value
         val newList = list.toMutableList()
-        newList.remove(note)
+        val iterator = newList.iterator()
+//        newList.removeIf{it.id == note.id}
+//        val res = newList.remove(note)
+        while (iterator.hasNext()){
+            val item = iterator.next()
+            if (item.id == note.id){
+                iterator.remove()
+            }
+        }
+//        newList.forEach{
+//            if (it.id == note.id){
+//                newList.remove(it)
+//            }
+//        }
         _tempMultiDeleteNotes.value = newList
+        Log.d("Remove Item from XXXX", note.Title + "  " )
+        logNotes(newList)
+    }
+
+    fun logNotes(list: List<Note>){
+        list.forEach {
+            Log.d("Remove Item from XXXX", it.Title)
+        }
+
     }
 
     fun updateTempNote(note:Note){
@@ -169,6 +211,15 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
 
         }
 
+    }
+
+    fun getAllNotesMain(){
+        viewModelScope.launch {
+            val temp = noteRepository.getAllMain().first()
+            // hide notes that have association with a folder
+            _notelist.value = temp
+
+        }
     }
 
 
@@ -235,6 +286,17 @@ class NotesViewModel @Inject constructor(application: Application, val noteRepos
                 showFloatButton = false,
                 isBottomNavVisible = false,
                 isMainTopBarVisible = false,
+                showNotListCheckBox = false
+            )
+        }
+    }
+
+    fun newFolderNotesUIState(){
+        _uiState.update {
+            it.copy(showBackTopBar = false,
+                showFloatButton = true,
+                isBottomNavVisible = false,
+                isMainTopBarVisible = true,
                 showNotListCheckBox = false
             )
         }

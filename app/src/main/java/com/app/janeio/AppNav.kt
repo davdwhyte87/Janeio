@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.app.janeio.home.HomeWarapper
 import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.presentation.NewNoteScreen
@@ -23,10 +24,11 @@ import com.app.janeio.todo.presentation.TodoScreen
 @Composable
 fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
 
-    NavHost(navController = navController, startDestination =com.app.janeio.notes.domain.NavScreen.NotesScreen.route ) {
+    NavHost(navController = navController, startDestination =com.app.janeio.notes.domain.NavScreen.HomeScreen.route ) {
         composable(route=NavScreen.HomeScreen.route){
 
-            HomeScreen(navController)
+            //HomeScreen(navController, notesViewModel)
+            HomeWarapper(navController , notesViewModel)
         }
 
 
@@ -39,9 +41,12 @@ fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
             TodoScreen()
         }
         
-        composable(route=NavScreen.NewNoteScreen.route){
+        composable(route=NavScreen.NewNoteScreen.route+"?id={id}"){navBackStack->
             notesViewModel.newNoteScreenUIState()
-           NewNoteScreen(navController = navController, notesViewModel = notesViewModel)
+            val noteId = navBackStack.arguments?.getString("id")
+           NewNoteScreen(navController = navController, notesViewModel = notesViewModel,
+               noteId = noteId
+           )
         }
 
         composable(route=NavScreen.SingleFolderScreen.route+"/{id}"){navBackStack->
@@ -62,7 +67,7 @@ fun appNav(navController:NavHostController, notesViewModel: NotesViewModel){
             notesViewModel.updateShowBackTopBar(true)
             val noteId = navBackStack.arguments?.getString("id")
             if (noteId !=null) {
-                SingleNoteScreen(noteId, notesViewModel)
+                SingleNoteScreen(noteId, notesViewModel, navController)
             }
         }
     }

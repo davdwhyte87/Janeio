@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +33,9 @@ fun DeleteButton(uiState: UIState,
                 onClick = {
                     Log.d("Delete Button clicked", "clicked")
                     notesViewModel.multiDelete()
+                    notesViewModel.clearMultiTempDeleteList()
                     notesViewModel.updateShowNoteListCheckBox(false)
+
                 },
                 modifier = Modifier
                     .align(Alignment.End)

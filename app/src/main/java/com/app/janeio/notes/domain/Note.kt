@@ -44,7 +44,8 @@ interface NoteDao {
 
     @Query("select * from note_table ")
     fun getAllNotes(): Flow<List<Note>>
-
+    @Query("select * from note_table where FolderID is NULL")
+    fun getAllNotesMain(): Flow<List<Note>>
     @Query("select * from note_table where id=:id")
     fun getSingle(id:Int):Flow<Note>
 

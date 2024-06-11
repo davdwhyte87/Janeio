@@ -1,15 +1,20 @@
 package com.app.janeio.notes.presentation.components
 
+import Janeio.R
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -24,7 +29,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +46,7 @@ import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.domain.UIState
 import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.LightGrey
+import com.app.janeio.ui.theme.Typography
 import com.app.janeio.ui.theme.XWhite
 
 
@@ -48,15 +56,20 @@ fun NotesNFoldersList( navController: NavHostController,
                        notesViewModel:NotesViewModel,
                        uiState: UIState){
 
-    notesViewModel.getAllNotes()
+    notesViewModel.getAllNotesMain()
 
     //val notes = notesViewModel.notesList.collectAsState()
     val notes = notesViewModel.notesList.collectAsState()
-    Log.d("NOTES COMP *******", notes.toString())
+   // Log.d("NOTES COMP *******", notes.toString())
 
 //    val filesNFolders = listOf()
+    // show empty compose if items are empty
+    if (notes.value.isEmpty()){
+     EmptyListView()
+    }
     LazyColumn (verticalArrangement = Arrangement.spacedBy(20.dp)) {
         items(notes.value){item->
+
             NoteItemView(data = item,
                 modifier = Modifier.combinedClickable (
                     onClick = {
@@ -74,7 +87,7 @@ fun NotesNFoldersList( navController: NavHostController,
                     },
                     onLongClick = {
                         Log.d("Long Press XXXX", "pressed")
-
+                        notesViewModel.updateShowNoteListCheckBox(true)
                     }
                 ),  notesViewModel, uiState
             )
@@ -124,11 +137,13 @@ fun NoteItemView(data: Note, modifier: Modifier,
                         checked = isChecked,
                         onCheckedChange = {
                             if (isChecked) {
-                                isChecked = false
                                 notesViewModel.removeFromMultiTempDeleteList(data)
+                                isChecked = false
+
                             }else{
-                                isChecked = true
                                 notesViewModel.updateMultiTempDeleteLIst(data)
+                                isChecked = true
+
                             }
 
                         },
@@ -161,3 +176,15 @@ fun NoteItemView(data: Note, modifier: Modifier,
     }
 
 }
+
+@Composable
+fun EmptyListView(){
+    val image = painterResource(id = R.drawable.empty_notes)
+    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+        Image(painter = image, contentDescription ="Empty list", Modifier.size(227.dp,227.dp ))
+        Text(text = "What do you want to note today?", style = Typography.titleLarge, color = XWhite)
+        Text(text = "Tap + to add a note", style = Typography.titleLarge, color = XWhite)
+    }
+}
+
+

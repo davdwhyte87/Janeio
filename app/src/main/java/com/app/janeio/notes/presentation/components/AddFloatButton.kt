@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Nat
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -12,7 +13,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.app.janeio.notes.domain.AppViewModel
+import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesUIEvent
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.domain.UIState
@@ -33,7 +37,24 @@ fun AddButton(viewModel: NotesViewModel) {
         shape = CircleShape,
         contentColor = XWhite,
         containerColor = LightPurple,
-        modifier = Modifier.padding(all=0.dp)
+        modifier = Modifier.padding(bottom = 50.dp)
+    ) {
+        Icon(Icons.Filled.Add, "Floating action button.", modifier = Modifier.padding(all = 0.dp))
+    }
+}
+
+
+@Composable
+fun AddNewNoteButton(navController: NavHostController, id:String?) {
+
+    FloatingActionButton(
+        onClick = {
+                  navController.navigate(NavScreen.NewNoteScreen.route+"?id=${id}")
+        },
+        shape = CircleShape,
+        contentColor = XWhite,
+        containerColor = LightPurple,
+        modifier = Modifier.padding(bottom = 50.dp)
     ) {
         Icon(Icons.Filled.Add, "Floating action button.", modifier = Modifier.padding(all = 0.dp))
     }

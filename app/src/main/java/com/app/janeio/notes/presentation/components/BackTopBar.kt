@@ -16,6 +16,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.domain.UIState
+import com.app.janeio.ui.theme.Typography
+import com.app.janeio.ui.theme.XWhite
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +44,7 @@ fun BackTopBar(navController: NavHostController,
     }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-
+    val tempNote = notesViewModel.tempNote.collectAsState().value
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
@@ -61,9 +64,21 @@ fun BackTopBar(navController: NavHostController,
 
                         NavScreen.NewNoteScreen.route->{
                             // appViewModel.saveNoteDataEvent()
-                            notesViewModel.saveTempNote()
+                            if (!tempNote.Title.isBlank()){
+                                notesViewModel.saveTempNote()
+                            }
                             navController.popBackStack()
                         }
+
+                        NavScreen.NewNoteScreen.route+"?id={id}"->{
+                            // appViewModel.saveNoteDataEvent()
+                            if (!tempNote.Title.isBlank()){
+                                notesViewModel.saveTempNote()
+                            }
+                            navController.popBackStack()
+                        }
+
+
                         NavScreen.SingleNoteScreen.route+"/{id}"->{
                             Log.d("Saving single note", "yes")
                             notesViewModel.saveSingleNote()
@@ -78,11 +93,11 @@ fun BackTopBar(navController: NavHostController,
                 }) {
                     Icon(imageVector = Icons.AutoMirrored.Sharp.ArrowBack,
                         contentDescription = null,
+                        tint = XWhite,
                         modifier = Modifier.size(30.dp)
                     )
                 }
-
-                Text(text = "Notes", fontSize = 30.sp)
+                Text(text = "Notes", style = Typography.titleLarge, color = XWhite)
             }
         })
 }

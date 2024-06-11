@@ -38,6 +38,9 @@ class NoteRepository @Inject constructor(val appx: Application, val noteDao: Not
     suspend fun getAll(): Flow<List<Note>> {
         return noteDao.getAllNotes()
     }
+    suspend fun getAllMain(): Flow<List<Note>> {
+        return noteDao.getAllNotesMain()
+    }
 
     fun getSingle(id:Int):Flow<Note>{
         return noteDao.getSingle(id)

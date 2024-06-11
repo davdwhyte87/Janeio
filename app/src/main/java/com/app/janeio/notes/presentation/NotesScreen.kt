@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -76,16 +78,22 @@ fun NotesScreen(
     val uiState: UIState = notesViewModel.uiState.collectAsState().value
 
 
+//    LaunchedEffect(key1 = true) {
+//        notesViewModel.clearMultiTempDeleteList()
+//    }
     Column(
         modifier = Modifier
-            .padding(all = 15.dp)
+            .padding(all = 8.dp).fillMaxHeight()
         ,
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ){
 
         SearchBar()
         DeleteButton(uiState, notesViewModel)
         NotesNFoldersList(navController, notesViewModel, uiState)
+
+
         NotesDialog(uiState = notesViewModel.uiState.collectAsState().value, navController=navController, notesViewModel = notesViewModel)
         NewFolderDialog(uiState = notesViewModel.uiState.collectAsState().value,
             notesViewModel)

@@ -6,7 +6,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.domain.UIState
+import com.app.janeio.notes.presentation.components.AddNewNoteButton
+import com.app.janeio.notes.presentation.components.BackTopBar
+import com.app.janeio.notes.presentation.components.FolderFilesAppBar
+import com.app.janeio.notes.presentation.components.GeneralScaffold
 import com.app.janeio.notes.presentation.components.SingleFolderNotes
+import com.app.janeio.notes.presentation.components.TopBar
 
 
 @Composable
@@ -16,5 +21,10 @@ fun SingleFolderScreen(notesViewModel: NotesViewModel,
                        ){
 
     val uiState: UIState = notesViewModel.uiState.collectAsState().value
-    SingleFolderNotes(notesViewModel, uiState, navController, id.toInt() )
+
+    GeneralScaffold(topBar = { FolderFilesAppBar(navController ) },
+        floatingActionButton = { AddNewNoteButton(navController, id) }) {
+        SingleFolderNotes(notesViewModel, uiState, navController, id.toInt() )
+    }
+
 }
