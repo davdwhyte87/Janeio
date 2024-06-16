@@ -35,22 +35,23 @@ fun TopBar(){
             titleContentColor = MaterialTheme.colorScheme.secondary
 
         ),
+        navigationIcon = {
+            Icon(imageVector = Icons.Filled.FilterList, contentDescription = null)
+        },
         title = {
-            Row (verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 4.dp, end = 8.dp)
-            ) {
-                Icon(imageVector = Icons.Filled.FilterList, contentDescription = null)
                 Text(text = "Hello David", fontSize = 20.sp)
+        },
+        actions = {
+            Row (modifier = Modifier.padding(end = 16.dp)){
                 Image(painter = painterResource(id = R.drawable.propic2), contentDescription =null,
                     modifier = Modifier
                         .clip(CircleShape)
                         .padding(1.dp, 1.dp)
                         .size(50.dp, 50.dp),
                     contentScale = ContentScale.FillWidth)
-
             }
-        })
+
+        },
+
+    )
 }

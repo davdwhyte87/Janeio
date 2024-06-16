@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -33,14 +34,14 @@ fun SingleFolderNotes(notesViewModel:NotesViewModel,
                       folderId:Int
                       ){
     notesViewModel.getFolderNotes(folderId)
-    notesViewModel.getSingle(folderId)
+    //notesViewModel.getSingle(folderId)
     val notes = notesViewModel.singleFolderNotesList.collectAsState()
 
 
 
 //    val filesNFolders = listOf()
     
-    Column (modifier = Modifier,
+    Column (modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -63,6 +64,7 @@ fun SingleFolderNotes(notesViewModel:NotesViewModel,
                             Log.d("FType XXXX", item.Type)
                             // navigate to a single note view
                             if(item.Type == FileType.FILE.name){
+                                Log.d("Single Note from Folder", NavScreen.SingleNoteScreen.route+"/${item.id}")
                                 navController.navigate(NavScreen.SingleNoteScreen.route+"/${item.id}")
                             }
                             // navigate to single folder screen

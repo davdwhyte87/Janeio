@@ -77,13 +77,11 @@ fun NotesScreen(
 ){
     val uiState: UIState = notesViewModel.uiState.collectAsState().value
 
-
 //    LaunchedEffect(key1 = true) {
 //        notesViewModel.clearMultiTempDeleteList()
 //    }
     Column(
-        modifier = Modifier
-            .padding(all = 8.dp).fillMaxHeight()
+        modifier = Modifier.fillMaxHeight().padding(16.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),

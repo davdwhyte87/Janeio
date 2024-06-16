@@ -60,7 +60,7 @@ fun NewNoteScreen (notesViewModel: NotesViewModel,
     val uiState: UIState = notesViewModel.uiState.collectAsState().value
     GeneralScaffold(topBar = { BackTopBar(navController, notesViewModel, uiState  ) }, floatingActionButton = {}, screenView = {
         Column (
-            Modifier.padding(start = 20.dp),
+            modifier= Modifier.padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
             ){
 
@@ -82,7 +82,7 @@ fun NewNoteScreen (notesViewModel: NotesViewModel,
                     )
                     notesViewModel.updateTempNote(note)
                 },
-                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-20.dp),
+                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-16.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
@@ -108,7 +108,7 @@ fun NewNoteScreen (notesViewModel: NotesViewModel,
                     unfocusedPlaceholderColor = XWhite,
                     cursorColor = XWhite
                 ),
-                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-20.dp),
+                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-16.dp),
                 onValueChange = {
                     noteData = it
                     var note = Note(

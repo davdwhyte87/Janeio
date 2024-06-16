@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.app.janeio.ui.theme.XWhite
 
 @Composable
 fun GeneralScaffold(topBar: @Composable () -> Unit, floatingActionButton: @Composable ()->Unit, screenView: @Composable ()->Unit){
@@ -20,7 +21,7 @@ fun GeneralScaffold(topBar: @Composable () -> Unit, floatingActionButton: @Compo
         },
         modifier = Modifier
             .padding(all = 0.dp)
-            .background(color = MaterialTheme.colorScheme.primary),
+            .background(color = XWhite),
         bottomBar = {
 
         },
@@ -35,15 +36,5 @@ fun GeneralScaffold(topBar: @Composable () -> Unit, floatingActionButton: @Compo
         Box(modifier = Modifier.padding(it)){
             screenView()
         }
-
-
-//        Column(
-//            modifier = Modifier
-//                .padding(it)
-//                .padding(all = 8.dp),
-//            verticalArrangement = Arrangement.spacedBy(1.dp),
-//        ) {
-//           screenView
-//        }
     }
 }

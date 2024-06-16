@@ -193,7 +193,7 @@ fun HomeWarapper(navController: NavHostController, notesViewModel: NotesViewMode
         Column(
             modifier = Modifier
                 .padding(it)
-                .padding(all = 8.dp)
+
             ,
             verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {

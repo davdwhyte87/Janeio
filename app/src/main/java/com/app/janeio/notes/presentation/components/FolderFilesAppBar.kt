@@ -41,29 +41,29 @@ fun FolderFilesAppBar(navHostController: NavHostController){
             titleContentColor = MaterialTheme.colorScheme.secondary
 
         ),
+        navigationIcon = {
+            IconButton(onClick = {
+                navHostController.popBackStack()
+            }) {
+                Icon(imageVector =Icons.AutoMirrored.Sharp.ArrowBack,
+                    contentDescription = null,
+                    tint = XWhite
+                )
+            }
+        },
         title = {
-            Row (verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 4.dp, end = 8.dp)
-            ) {
-                IconButton(onClick = {
-                    navHostController.popBackStack()
-                }) {
-                    Icon(imageVector =Icons.AutoMirrored.Sharp.ArrowBack,
-                        contentDescription = null,
-                        tint = XWhite
-                    )
-                }
                 Text(text = "Notes", fontSize = 20.sp, color = XWhite)
+        },
+        actions = {
+            Row (modifier = Modifier.padding(end = 16.dp)){
                 Image(painter = painterResource(id = R.drawable.propic2), contentDescription =null,
                     modifier = Modifier
                         .clip(CircleShape)
                         .padding(1.dp, 1.dp)
                         .size(50.dp, 50.dp),
                     contentScale = ContentScale.FillWidth)
-
             }
-        })
+
+        }
+    )
 }

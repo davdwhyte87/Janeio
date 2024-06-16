@@ -38,8 +38,12 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel, navController:NavHostController){
-
-
+    LaunchedEffect(key1 = true) {
+        notesViewModel.getSingle(id.toInt())
+        //notesViewModel.getSingle(id.toInt())
+        //title = singleNote.value.Title
+    }
+    Log.d("Single Note Id", id)
     //
     val singleNote = notesViewModel.singleNote.collectAsState()
     //val currentNoteState = singleNote
@@ -61,11 +65,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel, navController:Na
 //    noteData = "singleNote.Note"
 //    time =" singleNote.UpdatedAt"
 
-    LaunchedEffect(key1 = true) {
-        notesViewModel.getSingle(id.toInt())
-        //notesViewModel.getSingle(id.toInt())
-        //title = singleNote.value.Title
-    }
+
 
 
 
@@ -79,7 +79,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel, navController:Na
     val uiState: UIState = notesViewModel.uiState.collectAsState().value
     GeneralScaffold(topBar = { BackTopBar(navController, notesViewModel, uiState  )}, floatingActionButton = {}, screenView ={
         Column (
-            Modifier.padding(start = 20.dp),
+            Modifier.padding(start = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             TextField(
@@ -98,7 +98,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel, navController:Na
                     )
                     notesViewModel.changeSingleNote(note)
                 },
-                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-20.dp),
+                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-16.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.primary,
                     focusedContainerColor = MaterialTheme.colorScheme.primary,
@@ -112,7 +112,7 @@ fun SingleNoteScreen(id:String, notesViewModel: NotesViewModel, navController:Na
             Text(text =vformatted, style = Typography.bodySmall, color = XWhite, modifier = Modifier.padding(top = 10.dp))
             TextField(
                 value = noteData ,
-                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-20.dp),
+                modifier = Modifier.fillMaxWidth().padding(0.dp).offset(-16.dp),
                 textStyle = Typography.titleLarge,
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.primary,

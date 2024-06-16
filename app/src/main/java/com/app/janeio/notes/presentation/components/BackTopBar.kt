@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.ArrowBack
@@ -20,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -27,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.app.janeio.notes.domain.NavScreen
 import com.app.janeio.notes.domain.NotesViewModel
 import com.app.janeio.notes.domain.UIState
+import com.app.janeio.ui.theme.Black2
 import com.app.janeio.ui.theme.Typography
 import com.app.janeio.ui.theme.XWhite
 
@@ -51,53 +55,49 @@ fun BackTopBar(navController: NavHostController,
             navigationIconContentColor = MaterialTheme.colorScheme.secondary,
             titleContentColor = MaterialTheme.colorScheme.secondary
         ),
-        title = {
-            Row (verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                IconButton(onClick = {
+        modifier = Modifier.padding(all=0.dp),
+        navigationIcon ={
+            IconButton(onClick = {
+                Log.d("Destination string XX", currentDestination?.route.toString())
+                when(currentDestination?.route.toString()){
 
-                    Log.d("Destination string XX", currentDestination?.route.toString())
-                    when(currentDestination?.route.toString()){
-
-                        NavScreen.NewNoteScreen.route->{
-                            // appViewModel.saveNoteDataEvent()
-                            if (!tempNote.Title.isBlank()){
-                                notesViewModel.saveTempNote()
-                            }
-                            navController.popBackStack()
+                    NavScreen.NewNoteScreen.route->{
+                        // appViewModel.saveNoteDataEvent()
+                        if (!tempNote.Title.isBlank()){
+                            notesViewModel.saveTempNote()
                         }
-
-                        NavScreen.NewNoteScreen.route+"?id={id}"->{
-                            // appViewModel.saveNoteDataEvent()
-                            if (!tempNote.Title.isBlank()){
-                                notesViewModel.saveTempNote()
-                            }
-                            navController.popBackStack()
-                        }
-
-
-                        NavScreen.SingleNoteScreen.route+"/{id}"->{
-                            Log.d("Saving single note", "yes")
-                            notesViewModel.saveSingleNote()
-                            navController.popBackStack()
-                        }
-                        NavScreen.SingleFolderScreen.route+"/{id}"->{
-
-                            navController.popBackStack()
-                        }
+                        navController.popBackStack()
                     }
 
-                }) {
-                    Icon(imageVector = Icons.AutoMirrored.Sharp.ArrowBack,
-                        contentDescription = null,
-                        tint = XWhite,
-                        modifier = Modifier.size(30.dp)
-                    )
+                    NavScreen.NewNoteScreen.route+"?id={id}"->{
+                        // appViewModel.saveNoteDataEvent()
+                        if (!tempNote.Title.isBlank()){
+                            notesViewModel.saveTempNote()
+                        }
+                        navController.popBackStack()
+                    }
+
+
+                    NavScreen.SingleNoteScreen.route+"/{id}"->{
+                        Log.d("Saving single note", "yes")
+                        notesViewModel.saveSingleNote()
+                        navController.popBackStack()
+                    }
+                    NavScreen.SingleFolderScreen.route+"/{id}"->{
+
+                        navController.popBackStack()
+                    }
                 }
-                Text(text = "Notes", style = Typography.titleLarge, color = XWhite)
+
+            }) {
+                Icon(imageVector = Icons.AutoMirrored.Sharp.ArrowBack,
+                    contentDescription = null,
+                    tint = XWhite,
+                    modifier = Modifier.size(30.dp)
+                )
             }
+        } ,
+        title = {
+                Text(text = "Notes", style = Typography.titleLarge, color = XWhite)
         })
 }
